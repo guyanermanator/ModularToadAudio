@@ -2,7 +2,7 @@
 
 **Creative Audio for Independent Artists & Developers**
 
-A Windows 98 / pixel-art-inspired static website for the ModularToadAudio audio engineering business. Hosted for free on GitHub Pages — no server or build step required.
+A Windows 98 / pixel-art-inspired static website for the ModularToadAudio audio engineering business. Hosted for free on Neocities (1 GB free storage) — no server or build step required.
 
 ---
 
@@ -19,16 +19,33 @@ A Windows 98 / pixel-art-inspired static website for the ModularToadAudio audio 
 
 ---
 
-## 🚀 GitHub Pages Setup
+## 🚀 Neocities Setup
 
-1. Go to your repository on GitHub.
-2. Click **Settings → Pages**.
-3. Under **Source**, select **Deploy from a branch**.
-4. Choose **`main`** branch and **`/ (root)`** folder. Click **Save**.
-5. Your site will be live at:
+### Option A — Manual upload (simplest)
+
+1. Go to [neocities.org](https://neocities.org) and create a free account.
+2. From your Neocities dashboard click **Edit Site**.
+3. Drag-and-drop (or use **Upload** button) all files from this repository:
+   - `index.html`, `services.html`, `portfolio.html`, `pricing.html`, `about.html`, `contact.html`
+   - `css/style.css`
+   - `js/main.js`
+4. Your site will be live at:
    ```
-   https://guyanermanator.github.io/ModularToadAudio/
+   https://YOUR-USERNAME.neocities.org
    ```
+
+> **Storage:** The free Neocities tier includes **1 GB** of space — more than enough for this site.
+
+### Option B — Auto-deploy from GitHub (recommended)
+
+Every push to `main` auto-deploys to Neocities via the included GitHub Actions workflow.
+
+1. Create a free [Neocities](https://neocities.org) account.
+2. Get your API key: **Settings → API Key** → copy the token.
+3. In this GitHub repository go to **Settings → Secrets and variables → Actions → New repository secret**.
+   - Name: `NEOCITIES_API_TOKEN`
+   - Value: your Neocities API key
+4. Push any change to `main` — the workflow at `.github/workflows/deploy-neocities.yml` will upload all site files automatically.
 
 ---
 
@@ -88,7 +105,9 @@ ModularToadAudio/
 │   └── style.css       All styles (Win98 design system)
 ├── js/
 │   └── main.js         Interactivity (clock, nav, start menu, sounds)
-├── .nojekyll           Disables Jekyll — required for GitHub Pages
+├── .github/
+│   └── workflows/
+│       └── deploy-neocities.yml   Auto-deploy to Neocities on push
 └── README.md           This file
 ```
 
