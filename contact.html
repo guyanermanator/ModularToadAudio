@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact ModularToadAudio — send your project details, get a quote, or request a free mix evaluation.">
+  <title>Contact — ModularToadAudio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🐸</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="desktop">
+
+  <!-- ── NAVIGATION ──────────────────────────────────────── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a class="navbar-brand" href="index.html">
+      <span class="toad-icon" aria-hidden="true">🐸</span>
+      <span>Modular<br>Toad Audio</span>
+    </a>
+    <div class="nav-sep" aria-hidden="true"></div>
+    <div class="navbar-menu" id="navMenu">
+      <a class="nav-item" href="index.html">Home</a>
+      <a class="nav-item" href="services.html">Services</a>
+      <a class="nav-item" href="portfolio.html">Portfolio</a>
+      <a class="nav-item" href="pricing.html">Pricing</a>
+      <a class="nav-item" href="about.html">About</a>
+      <a class="nav-item" href="contact.html">Contact</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">☰</button>
+  </nav>
+
+  <!-- ── MAIN CONTENT ─────────────────────────────────────── -->
+  <main class="main-content">
+    <div class="window main-window" role="main">
+
+      <div class="window-titlebar" aria-hidden="true">
+        <span class="titlebar-icon">📧</span>
+        <span class="titlebar-title">ModularToadAudio — Contact</span>
+        <div class="titlebar-buttons">
+          <button class="titlebar-btn minimize" tabindex="-1">_</button>
+          <button class="titlebar-btn maximize" tabindex="-1">□</button>
+          <button class="titlebar-btn close"    tabindex="-1">✕</button>
+        </div>
+      </div>
+
+      <div class="window-body">
+
+        <section class="section" aria-labelledby="contact-heading">
+          <h1 class="section-title" id="contact-heading">Get in Touch</h1>
+          <p style="font-size:13px;line-height:1.7;margin-bottom:14px">
+            Ready to work together, have a question, or want a free mix evaluation?
+            Fill out the form below and we'll respond within 24 hours.
+          </p>
+        </section>
+
+        <!-- ══════════════════════════════════════════════════
+             CONTACT FORM SETUP INSTRUCTIONS:
+             ──────────────────────────────────────────────────
+             This form uses Formspree (free, no server needed).
+
+             STEPS:
+             1. Go to https://formspree.io and create a FREE account.
+             2. Click "New Form" and enter the email:
+                Vincentlujan98@gmail.com
+             3. Copy your unique form ID (looks like: abcdefgh)
+             4. Replace FORMSPREE_FORM_ID_HERE below with that ID.
+                Example: action="https://formspree.io/f/abcdefgh"
+             5. Done! Formspree handles delivery to your email.
+
+             File uploads are supported on Formspree's free tier.
+             For files larger than 25 MB, ask clients to share
+             a Google Drive / Dropbox / WeTransfer link in their message.
+        ══════════════════════════════════════════════════════ -->
+
+        <div class="contact-layout">
+
+          <!-- ── CONTACT INFO PANEL ─────────────────────── -->
+          <aside class="contact-info-panel" aria-label="Contact information">
+            <h2>Contact Info</h2>
+
+            <div class="contact-detail">
+              <span class="contact-detail-icon" aria-hidden="true">📧</span>
+              <div>
+                <strong style="display:block;margin-bottom:2px">Email</strong>
+                <a href="mailto:Vincentlujan98@gmail.com">Vincentlujan98@gmail.com</a>
+              </div>
+            </div>
+
+            <div class="contact-detail">
+              <span class="contact-detail-icon" aria-hidden="true">⏱️</span>
+              <div>
+                <strong style="display:block;margin-bottom:2px">Response Time</strong>
+                Within 24 hours
+              </div>
+            </div>
+
+            <div class="contact-detail">
+              <span class="contact-detail-icon" aria-hidden="true">🎧</span>
+              <div>
+                <strong style="display:block;margin-bottom:2px">Free Offer</strong>
+                Free mix evaluation for first-time clients
+              </div>
+            </div>
+
+            <div class="contact-detail">
+              <span class="contact-detail-icon" aria-hidden="true">💰</span>
+              <div>
+                <strong style="display:block;margin-bottom:2px">New Customer?</strong>
+                Mention it in your message for 50% off your first track
+              </div>
+            </div>
+
+            <div class="pixel-divider" aria-hidden="true"></div>
+
+            <div class="notice notice-info" style="margin:0">
+              <span class="notice-icon" aria-hidden="true">📁</span>
+              <span style="font-size:11px">
+                For audio files <strong>larger than 25 MB</strong>, please share a
+                Google Drive, Dropbox or WeTransfer link in your message.
+              </span>
+            </div>
+          </aside>
+
+          <!-- ── CONTACT FORM ───────────────────────────── -->
+          <div class="panel-inset">
+            <form
+              id="contactForm"
+              action="https://formspree.io/f/FORMSPREE_FORM_ID_HERE"
+              method="POST"
+              enctype="multipart/form-data"
+              novalidate>
+
+              <!-- Hidden field so you know it came from the website -->
+              <input type="hidden" name="_subject" value="New Enquiry — ModularToadAudio">
+              <!-- Formspree honeypot (spam protection) -->
+              <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+              <!-- Name -->
+              <div class="form-group">
+                <label class="form-label" for="name">
+                  Your Name <span aria-hidden="true" style="color:#cc0000">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="e.g. Alex Rivera"
+                  required
+                  autocomplete="name">
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label class="form-label" for="email">
+                  Your Email <span aria-hidden="true" style="color:#cc0000">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="e.g. you@example.com"
+                  required
+                  autocomplete="email">
+              </div>
+
+              <!-- Service Interest -->
+              <div class="form-group">
+                <label class="form-label" for="service">Service You're Interested In</label>
+                <select class="form-select" id="service" name="service">
+                  <option value="">— Select a service —</option>
+                  <option value="mixing">Mixing</option>
+                  <option value="mastering">Mastering</option>
+                  <option value="mixing-mastering">Mixing + Mastering</option>
+                  <option value="podcast">Podcast Editing</option>
+                  <option value="loudness">Loudness Normalization</option>
+                  <option value="stems">Stem Preparation / Separation</option>
+                  <option value="free-eval">Free Mix Evaluation</option>
+                  <option value="custom">Custom / Not Sure Yet</option>
+                </select>
+              </div>
+
+              <!-- Message -->
+              <div class="form-group">
+                <label class="form-label" for="message">
+                  Message <span aria-hidden="true" style="color:#cc0000">*</span>
+                </label>
+                <textarea
+                  class="form-textarea"
+                  id="message"
+                  name="message"
+                  placeholder="Tell us about your project — genre, BPM, deadline, any references you love, or anything else that helps us understand what you're going for."
+                  required></textarea>
+              </div>
+
+              <!-- File attachment -->
+              <div class="form-group">
+                <label class="form-label">Audio File (optional)</label>
+                <label class="form-file-label" for="audioFile">
+                  📎 Choose File
+                </label>
+                <input
+                  class="form-file-input"
+                  type="file"
+                  id="audioFile"
+                  name="audioFile"
+                  accept="audio/*,.wav,.mp3,.aiff,.aif,.flac,.ogg,.m4a,.zip">
+                <div class="form-file-name" id="fileName" aria-live="polite">No file chosen</div>
+                <div style="font-size:11px;color:var(--gray-dark);margin-top:4px">
+                  Accepted: WAV, MP3, AIFF, FLAC, OGG, M4A, ZIP · Max 25 MB<br>
+                  Larger files? Share a Google Drive / WeTransfer link in your message.
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                <button type="submit" class="btn btn-primary">
+                  📨 Send Message
+                </button>
+                <span style="font-size:11px;color:var(--gray-dark)">
+                  We respond within 24 hours.
+                </span>
+              </div>
+
+              <!-- Required field note -->
+              <p style="font-size:11px;color:var(--gray-dark);margin-top:10px">
+                <span style="color:#cc0000">*</span> Required fields
+              </p>
+
+            </form>
+          </div><!-- /.panel-inset -->
+
+        </div><!-- /.contact-layout -->
+
+      </div><!-- /.window-body -->
+
+      <div class="status-bar" aria-hidden="true">
+        <span class="status-item">📧 Contact</span>
+        <span class="status-item">Vincentlujan98@gmail.com</span>
+        <span class="status-item">Response within 24 h</span>
+      </div>
+
+    </div><!-- /.main-window -->
+  </main>
+
+  <!-- ── TASKBAR ───────────────────────────────────────────── -->
+  <footer class="taskbar" role="contentinfo">
+    <button class="start-btn" id="startBtn" aria-label="Open site menu" aria-haspopup="true">🐸 Start</button>
+    <div class="taskbar-sep" aria-hidden="true"></div>
+    <div class="taskbar-items" aria-hidden="true">
+      <div class="taskbar-app">📧 Contact</div>
+    </div>
+    <div class="taskbar-clock" id="clock" aria-label="Current time">00:00</div>
+  </footer>
+
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
