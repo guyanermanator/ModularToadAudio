@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ModularToadAudio portfolio — listen to mixes, masters and production work on YouTube.">
+  <title>Portfolio — ModularToadAudio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🐸</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Extra portfolio-page styles */
+    .portfolio-filter {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .filter-btn {
+      padding: 5px 12px;
+      font-size: 11px;
+      background: var(--gray);
+      border: 2px solid;
+      border-color: var(--bdr-lt) var(--bdr-dk) var(--bdr-dk) var(--bdr-lt);
+      cursor: pointer;
+      transition: background .08s, color .08s;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--toad-mid);
+      color: var(--white);
+      border-color: var(--toad-dark);
+    }
+    .filter-btn:active {
+      border-color: var(--bdr-dk) var(--bdr-lt) var(--bdr-lt) var(--bdr-dk);
+    }
+    .portfolio-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      background: #111;
+      color: #95d5b2;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      min-height: 158px;
+      text-align: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="desktop">
+
+  <!-- ── NAVIGATION ──────────────────────────────────────── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a class="navbar-brand" href="index.html">
+      <span class="toad-icon" aria-hidden="true">🐸</span>
+      <span>Modular<br>Toad Audio</span>
+    </a>
+    <div class="nav-sep" aria-hidden="true"></div>
+    <div class="navbar-menu" id="navMenu">
+      <a class="nav-item" href="index.html">Home</a>
+      <a class="nav-item" href="services.html">Services</a>
+      <a class="nav-item" href="portfolio.html">Portfolio</a>
+      <a class="nav-item" href="pricing.html">Pricing</a>
+      <a class="nav-item" href="about.html">About</a>
+      <a class="nav-item" href="contact.html">Contact</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">☰</button>
+  </nav>
+
+  <!-- ── MAIN CONTENT ─────────────────────────────────────── -->
+  <main class="main-content">
+    <div class="window main-window" role="main">
+
+      <div class="window-titlebar" aria-hidden="true">
+        <span class="titlebar-icon">🎬</span>
+        <span class="titlebar-title">ModularToadAudio — Portfolio</span>
+        <div class="titlebar-buttons">
+          <button class="titlebar-btn minimize" tabindex="-1">_</button>
+          <button class="titlebar-btn maximize" tabindex="-1">□</button>
+          <button class="titlebar-btn close"    tabindex="-1">✕</button>
+        </div>
+      </div>
+
+      <div class="window-body">
+
+        <section class="section" aria-labelledby="port-heading">
+          <h1 class="section-title" id="port-heading">Portfolio</h1>
+          <p style="font-size:13px;line-height:1.7;margin-bottom:16px">
+            A selection of mixes, masters and production projects. Click play to listen directly in your browser.
+          </p>
+
+          <!-- Filter buttons (JS-optional, still accessible) -->
+          <div class="portfolio-filter" role="group" aria-label="Filter by category">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="mixing">Mixing</button>
+            <button class="filter-btn" data-filter="mastering">Mastering</button>
+            <button class="filter-btn" data-filter="podcast">Podcast</button>
+          </div>
+        </section>
+
+        <!-- ════════════════════════════════════════════════ -->
+        <!-- HOW TO ADD VIDEOS:
+             Replace VIDEO_ID_HERE with your YouTube video ID.
+             The ID is the part after "?v=" in the YouTube URL.
+             Example: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+                                                      ^^^^^^^^^^^^^ this part
+             You can also add more <div class="portfolio-item window"> blocks.
+             Change the data-category attribute to match the filter buttons above.
+        ════════════════════════════════════════════════════ -->
+
+        <div class="portfolio-grid" id="portfolioGrid">
+
+          <!-- ITEM 1: Replace VIDEO_ID_HERE with your actual YouTube video ID -->
+          <div class="portfolio-item window" data-category="mixing">
+            <div class="window-titlebar">
+              <span class="titlebar-icon" aria-hidden="true">🎚️</span>
+              <span class="titlebar-title">Mix Project — Track Title</span>
+            </div>
+            <div class="video-container">
+              <!-- Replace VIDEO_ID_HERE below with your actual YouTube video ID -->
+              <div class="portfolio-placeholder" aria-label="Video placeholder — add your YouTube video ID">
+                <span style="font-size:32px">▶</span>
+                <strong>Mixing Demo</strong>
+                <span style="opacity:.7">Replace VIDEO_ID_HERE in portfolio.html<br>with your actual YouTube video ID</span>
+              </div>
+              <!-- Uncomment and fill in the line below when you have a video ID:
+              <iframe
+                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                title="Mix Project — Track Title"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+              -->
+            </div>
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
+              <strong>Service:</strong> Mixing &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
+            </div>
+          </div>
+
+          <!-- ITEM 2 -->
+          <div class="portfolio-item window" data-category="mastering">
+            <div class="window-titlebar">
+              <span class="titlebar-icon" aria-hidden="true">💿</span>
+              <span class="titlebar-title">Mastering Project — Track Title</span>
+            </div>
+            <div class="video-container">
+              <div class="portfolio-placeholder" aria-label="Video placeholder">
+                <span style="font-size:32px">▶</span>
+                <strong>Mastering Demo</strong>
+                <span style="opacity:.7">Add your YouTube video ID here</span>
+              </div>
+              <!--
+              <iframe
+                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                title="Mastering Project — Track Title"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+              -->
+            </div>
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
+              <strong>Service:</strong> Mastering &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
+            </div>
+          </div>
+
+          <!-- ITEM 3 -->
+          <div class="portfolio-item window" data-category="podcast">
+            <div class="window-titlebar">
+              <span class="titlebar-icon" aria-hidden="true">🎙️</span>
+              <span class="titlebar-title">Podcast Episode — Episode Title</span>
+            </div>
+            <div class="video-container">
+              <div class="portfolio-placeholder" aria-label="Video placeholder">
+                <span style="font-size:32px">▶</span>
+                <strong>Podcast Editing Demo</strong>
+                <span style="opacity:.7">Add your YouTube video ID here</span>
+              </div>
+              <!--
+              <iframe
+                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                title="Podcast Episode — Episode Title"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+              -->
+            </div>
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
+              <strong>Service:</strong> Podcast Editing &nbsp;|&nbsp; <strong>Type:</strong> Add type here
+            </div>
+          </div>
+
+          <!-- ITEM 4 -->
+          <div class="portfolio-item window" data-category="mixing">
+            <div class="window-titlebar">
+              <span class="titlebar-icon" aria-hidden="true">🎚️</span>
+              <span class="titlebar-title">Mix Project — Track Title</span>
+            </div>
+            <div class="video-container">
+              <div class="portfolio-placeholder" aria-label="Video placeholder">
+                <span style="font-size:32px">▶</span>
+                <strong>Mixing Demo</strong>
+                <span style="opacity:.7">Add your YouTube video ID here</span>
+              </div>
+              <!--
+              <iframe
+                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                title="Mix Project — Track Title"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+              -->
+            </div>
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
+              <strong>Service:</strong> Mixing &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
+            </div>
+          </div>
+
+          <!-- ITEM 5 -->
+          <div class="portfolio-item window" data-category="mastering">
+            <div class="window-titlebar">
+              <span class="titlebar-icon" aria-hidden="true">💿</span>
+              <span class="titlebar-title">Mastering Project — Track Title</span>
+            </div>
+            <div class="video-container">
+              <div class="portfolio-placeholder" aria-label="Video placeholder">
+                <span style="font-size:32px">▶</span>
+                <strong>Mastering Demo</strong>
+                <span style="opacity:.7">Add your YouTube video ID here</span>
+              </div>
+              <!--
+              <iframe
+                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                title="Mastering Project — Track Title"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+              -->
+            </div>
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
+              <strong>Service:</strong> Mastering &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
+            </div>
+          </div>
+
+          <!-- ITEM 6 -->
+          <div class="portfolio-item window" data-category="mixing">
+            <div class="window-titlebar">
+              <span class="titlebar-icon" aria-hidden="true">🎚️</span>
+              <span class="titlebar-title">Mix Project — Track Title</span>
+            </div>
+            <div class="video-container">
+              <div class="portfolio-placeholder" aria-label="Video placeholder">
+                <span style="font-size:32px">▶</span>
+                <strong>Mixing Demo</strong>
+                <span style="opacity:.7">Add your YouTube video ID here</span>
+              </div>
+              <!--
+              <iframe
+                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
+                title="Mix Project — Track Title"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+              -->
+            </div>
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
+              <strong>Service:</strong> Mixing &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
+            </div>
+          </div>
+
+        </div><!-- /#portfolioGrid -->
+
+        <div class="pixel-divider mt-16" aria-hidden="true"></div>
+
+        <div class="notice notice-info">
+          <span class="notice-icon" aria-hidden="true">ℹ️</span>
+          <span>
+            Want to hear more? Check out the
+            <a href="https://www.youtube.com/@ModularToadAudio" target="_blank" rel="noopener noreferrer">ModularToadAudio YouTube channel</a>
+            for the full library of work.
+          </span>
+        </div>
+
+        <div class="mt-12">
+          <a class="btn btn-primary" href="contact.html">📋 Book a Session</a>
+          <a class="btn btn-secondary" href="pricing.html" style="margin-left:8px">💰 See Pricing</a>
+        </div>
+
+      </div><!-- /.window-body -->
+
+      <div class="status-bar" aria-hidden="true">
+        <span class="status-item">🎬 Portfolio</span>
+        <span class="status-item">6 Projects</span>
+      </div>
+
+    </div><!-- /.main-window -->
+  </main>
+
+  <!-- ── TASKBAR ───────────────────────────────────────────── -->
+  <footer class="taskbar" role="contentinfo">
+    <button class="start-btn" id="startBtn" aria-label="Open site menu" aria-haspopup="true">🐸 Start</button>
+    <div class="taskbar-sep" aria-hidden="true"></div>
+    <div class="taskbar-items" aria-hidden="true">
+      <div class="taskbar-app">🎬 Portfolio</div>
+    </div>
+    <div class="taskbar-clock" id="clock" aria-label="Current time">00:00</div>
+  </footer>
+
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  /* Portfolio category filter */
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('#portfolioGrid .portfolio-item').forEach(item => {
+        const cat = item.dataset.category;
+        item.style.display = (filter === 'all' || cat === filter) ? '' : 'none';
+      });
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ModularToadAudio — Creative audio engineering for independent artists & developers. Professional mixing, mastering, podcast editing and more.">
+  <title>ModularToadAudio — Creative Audio for Independent Artists &amp; Developers</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🐸</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ░░ DESKTOP SHELL ░░ -->
+<div class="desktop">
+
+  <!-- ── NAVIGATION ──────────────────────────────────────── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <a class="navbar-brand" href="index.html">
+      <span class="toad-icon" aria-hidden="true">🐸</span>
+      <span>Modular<br>Toad Audio</span>
+    </a>
+    <div class="nav-sep" aria-hidden="true"></div>
+    <div class="navbar-menu" id="navMenu">
+      <a class="nav-item" href="index.html">Home</a>
+      <a class="nav-item" href="services.html">Services</a>
+      <a class="nav-item" href="portfolio.html">Portfolio</a>
+      <a class="nav-item" href="pricing.html">Pricing</a>
+      <a class="nav-item" href="about.html">About</a>
+      <a class="nav-item" href="contact.html">Contact</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">☰</button>
+  </nav>
+
+  <!-- ── MAIN CONTENT ─────────────────────────────────────── -->
+  <main class="main-content">
+    <div class="window main-window" role="main">
+
+      <!-- Window chrome -->
+      <div class="window-titlebar" aria-hidden="true">
+        <span class="titlebar-icon">🐸</span>
+        <span class="titlebar-title">ModularToadAudio — Home</span>
+        <div class="titlebar-buttons">
+          <button class="titlebar-btn minimize" tabindex="-1">_</button>
+          <button class="titlebar-btn maximize" tabindex="-1">□</button>
+          <button class="titlebar-btn close"    tabindex="-1">✕</button>
+        </div>
+      </div>
+
+      <!-- ── HERO ────────────────────────────────────────── -->
+      <section class="hero" aria-label="Welcome banner">
+        <div class="hero-mascot">
+          <!-- Pixel-art toad SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-label="ModularToadAudio toad mascot" role="img" style="image-rendering:pixelated">
+            <!-- eye bulges -->
+            <rect x="10" y="10" width="14" height="14" fill="#2d6a4f"/>
+            <rect x="40" y="10" width="14" height="14" fill="#2d6a4f"/>
+            <!-- eye whites -->
+            <rect x="12" y="12" width="10" height="10" fill="#fff"/>
+            <rect x="42" y="12" width="10" height="10" fill="#fff"/>
+            <!-- pupils -->
+            <rect x="14" y="14" width="6"  height="6"  fill="#000"/>
+            <rect x="44" y="14" width="6"  height="6"  fill="#000"/>
+            <!-- eye shine -->
+            <rect x="15" y="15" width="2"  height="2"  fill="#fff"/>
+            <rect x="45" y="15" width="2"  height="2"  fill="#fff"/>
+            <!-- head -->
+            <rect x="18" y="18" width="28" height="12" fill="#2d6a4f"/>
+            <!-- body -->
+            <rect x="14" y="28" width="36" height="24" fill="#2d6a4f"/>
+            <!-- belly -->
+            <rect x="18" y="32" width="28" height="16" fill="#95d5b2"/>
+            <!-- nostrils -->
+            <rect x="28" y="24" width="2"  height="2"  fill="#1b4332"/>
+            <rect x="34" y="24" width="2"  height="2"  fill="#1b4332"/>
+            <!-- smile -->
+            <rect x="22" y="42" width="20" height="2"  fill="#1b4332"/>
+            <rect x="20" y="40" width="2"  height="2"  fill="#1b4332"/>
+            <rect x="42" y="40" width="2"  height="2"  fill="#1b4332"/>
+            <!-- front legs -->
+            <rect x="4"  y="38" width="12" height="6"  fill="#2d6a4f"/>
+            <rect x="48" y="38" width="12" height="6"  fill="#2d6a4f"/>
+            <!-- toes -->
+            <rect x="2"  y="44" width="4"  height="4"  fill="#2d6a4f"/>
+            <rect x="8"  y="44" width="4"  height="4"  fill="#2d6a4f"/>
+            <rect x="52" y="44" width="4"  height="4"  fill="#2d6a4f"/>
+            <rect x="58" y="44" width="4"  height="4"  fill="#2d6a4f"/>
+            <!-- back feet hint -->
+            <rect x="14" y="50" width="10" height="4"  fill="#1b4332"/>
+            <rect x="40" y="50" width="10" height="4"  fill="#1b4332"/>
+          </svg>
+        </div>
+
+        <h1 class="hero-title" id="heroTitle">ModularToadAudio</h1>
+        <p  class="hero-tagline">Creative Audio for Independent Artists &amp; Developers</p>
+
+        <div class="hero-cta">
+          <a class="btn btn-primary"   href="contact.html">📋 Get a Quote</a>
+          <a class="btn btn-secondary" href="contact.html">🎧 Free Mix Evaluation</a>
+        </div>
+      </section>
+
+      <!-- Window body for page content -->
+      <div class="window-body">
+
+        <!-- ── INTRO ──────────────────────────────────────── -->
+        <section class="section" aria-labelledby="intro-heading">
+          <h2 class="section-title" id="intro-heading">Welcome</h2>
+          <div class="panel-inset">
+            <p style="font-size:13px;line-height:1.75;margin-bottom:10px">
+              <strong>ModularToadAudio</strong> is a boutique audio engineering service
+              focused on helping independent artists and developers sound their absolute best —
+              at a price that doesn't require a major-label budget.
+            </p>
+            <p style="font-size:13px;line-height:1.75">
+              Whether you're recording your first EP, launching a podcast, or preparing stems
+              for a game soundtrack, we bring professional ears and creative energy to every project.
+            </p>
+          </div>
+        </section>
+
+        <div class="pixel-divider" aria-hidden="true"></div>
+
+        <!-- ── FEATURED SERVICES ─────────────────────────── -->
+        <section class="section" aria-labelledby="services-heading">
+          <h2 class="section-title" id="services-heading">Featured Services</h2>
+          <div class="services-grid">
+            <div class="service-card window">
+              <span class="service-card-icon" aria-hidden="true">🎚️</span>
+              <div class="service-card-title">Mixing</div>
+              <p>Professional multi-track mixing that brings out the best in your recordings.</p>
+            </div>
+            <div class="service-card window">
+              <span class="service-card-icon" aria-hidden="true">💿</span>
+              <div class="service-card-title">Mastering</div>
+              <p>Polished, release-ready masters optimised for streaming, vinyl and beyond.</p>
+            </div>
+            <div class="service-card window">
+              <span class="service-card-icon" aria-hidden="true">🎙️</span>
+              <div class="service-card-title">Podcast Editing</div>
+              <p>Clean, broadcast-quality podcast production and noise reduction.</p>
+            </div>
+            <div class="service-card window">
+              <span class="service-card-icon" aria-hidden="true">🔊</span>
+              <div class="service-card-title">Loudness &amp; Stems</div>
+              <p>Platform-standard normalization and stem preparation / separation.</p>
+            </div>
+          </div>
+          <div class="flex-gap mt-8">
+            <a class="btn btn-secondary" href="services.html">View All Services →</a>
+            <a class="btn btn-secondary" href="pricing.html">See Pricing →</a>
+          </div>
+        </section>
+
+        <div class="pixel-divider" aria-hidden="true"></div>
+
+        <!-- ── PORTFOLIO PREVIEW ─────────────────────────── -->
+        <section class="section" aria-labelledby="portfolio-heading">
+          <h2 class="section-title" id="portfolio-heading">Portfolio Preview</h2>
+          <div class="panel-raised" style="text-align:center;padding:28px">
+            <span style="font-size:48px" aria-hidden="true">🎬</span>
+            <p style="font-size:13px;margin:12px 0 18px">
+              Check out mixes, masters and production work on our portfolio page.
+            </p>
+            <a class="btn btn-secondary" href="portfolio.html">Watch on Portfolio →</a>
+          </div>
+        </section>
+
+        <div class="pixel-divider" aria-hidden="true"></div>
+
+        <!-- ── TESTIMONIALS ──────────────────────────────── -->
+        <section class="section" aria-labelledby="testimonials-heading">
+          <h2 class="section-title" id="testimonials-heading">Client Testimonials</h2>
+          <div class="testimonial-grid">
+            <div class="testimonial-card">
+              <p class="testimonial-text">
+                "ModularToadAudio completely transformed my demo tracks. Professional quality
+                at an indie-friendly price — I can't recommend them enough!"
+              </p>
+              <cite>— Alex R., Independent Artist</cite>
+            </div>
+            <div class="testimonial-card">
+              <p class="testimonial-text">
+                "The podcast editing service is incredible. Clean audio, fast turnaround,
+                and excellent communication throughout the whole process."
+              </p>
+              <cite>— Jordan M., Podcast Creator</cite>
+            </div>
+          </div>
+        </section>
+
+        <div class="pixel-divider" aria-hidden="true"></div>
+
+        <!-- ── CALL TO ACTION ─────────────────────────────── -->
+        <section aria-labelledby="cta-heading">
+          <div class="cta-band">
+            <h2 id="cta-heading">Ready to Level Up Your Sound?</h2>
+            <p>Get in touch for a free consultation and mix evaluation.</p>
+            <a class="btn btn-primary" href="contact.html">📧 Contact Us Today</a>
+          </div>
+        </section>
+
+      </div><!-- /.window-body -->
+
+      <!-- Status bar -->
+      <div class="status-bar" aria-hidden="true">
+        <span class="status-item">🐸 ModularToadAudio</span>
+        <span class="status-item">Ready</span>
+        <span class="status-item">Mixing &amp; Mastering Services</span>
+      </div>
+
+    </div><!-- /.main-window -->
+  </main>
+
+  <!-- ── TASKBAR ───────────────────────────────────────────── -->
+  <footer class="taskbar" role="contentinfo">
+    <button class="start-btn" id="startBtn" aria-label="Open site menu" aria-haspopup="true">
+      🐸 Start
+    </button>
+    <div class="taskbar-sep" aria-hidden="true"></div>
+    <div class="taskbar-items" aria-hidden="true">
+      <div class="taskbar-app">🐸 ModularToadAudio — Home</div>
+    </div>
+    <div class="taskbar-clock" id="clock" aria-label="Current time">00:00</div>
+  </footer>
+
+</div><!-- /.desktop -->
+
+<script src="js/main.js"></script>
+</body>
+</html>
