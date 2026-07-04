@@ -54,7 +54,7 @@ Every push to `main` auto-deploys to Neocities via the included GitHub Actions w
 The contact form needs a free Formspree account to deliver emails.
 
 1. Go to [formspree.io](https://formspree.io) and sign up for free.
-2. Click **New Form**, set the notification email to `Vincentlujan98@gmail.com`.
+2. Click **New Form**, set the notification email to `ModularToadAudio@protonmail.com`.
 3. Copy your form ID (e.g. `abcdefgh`).
 4. Open `contact.html` and replace `FORMSPREE_FORM_ID_HERE` with your actual ID:
    ```html

@@ -2,7 +2,7 @@
    ModularToadAudio — main.js
    Interactive behaviors: PS2 background, clock, navigation,
    start menu, toast notifications, button sounds, mobile nav,
-   desktop icons, hero water shader, mascot poke, synth cables
+   desktop icons, hero water shader, mascot poke, carousel
    ============================================================ */
 
 /* ── CLOCK ──────────────────────────────────────────────────── */
@@ -222,7 +222,7 @@ function initMascotPoke() {
     void wrapper.offsetWidth; // force reflow
     wrapper.classList.add('poked');
     playBlip(380, 0.12, 'sine', 0.09);
-    showToast('Boing! 🐸');
+    showToast('Logo pulse engaged.');
   }
 
   wrapper.addEventListener('click', poke);
@@ -233,124 +233,6 @@ function initMascotPoke() {
   wrapper.addEventListener('animationend', (e) => {
     if (e.animationName === 'toadPoke') wrapper.classList.remove('poked');
   });
-}
-
-/* ── MODULAR SYNTH CABLES ────────────────────────────────────── */
-function initSynthCables() {
-  const svg = document.getElementById('synthCables');
-  if (!svg) return;
-
-  const mainWin = document.querySelector('.main-window');
-  if (!mainWin) return;
-
-  const NS = 'http://www.w3.org/2000/svg';
-
-  // Cable color palette (modular synth cable colors)
-  const CABLES = [
-    { color: '#ff4444', w: 3.5 },
-    { color: '#ffcc00', w: 3 },
-    { color: '#44aaff', w: 3 },
-    { color: '#ff8800', w: 3 },
-    { color: '#cc44ff', w: 2.5 },
-    { color: '#44ff88', w: 2.5 },
-  ];
-
-  // Create path + jack circle elements for each cable
-  const cableEls = CABLES.map(c => {
-    const path  = document.createElementNS(NS, 'path');
-    const jack1 = document.createElementNS(NS, 'circle');
-    const jack2 = document.createElementNS(NS, 'circle');
-
-    path.setAttribute('fill', 'none');
-    path.setAttribute('stroke', c.color);
-    path.setAttribute('stroke-width', c.w);
-    path.setAttribute('stroke-linecap', 'round');
-    path.setAttribute('opacity', '0.65');
-    path.style.filter = `drop-shadow(0 0 3px ${c.color}88)`;
-
-    [jack1, jack2].forEach(j => {
-      j.setAttribute('r', '5');
-      j.setAttribute('fill', c.color);
-      j.setAttribute('opacity', '0.8');
-      j.style.filter = `drop-shadow(0 0 3px ${c.color})`;
-    });
-
-    svg.appendChild(path);
-    svg.appendChild(jack1);
-    svg.appendChild(jack2);
-    return { path, jack1, jack2, color: c.color };
-  });
-
-  let mouseX = -9999, mouseY = -9999;
-  let t = 0;
-
-  document.addEventListener('mousemove', (e) => {
-    const rect = mainWin.getBoundingClientRect();
-    mouseX = e.clientX - rect.left;
-    mouseY = e.clientY - rect.top;
-  }, { passive: true });
-
-  function getCable(idx) {
-    const w = mainWin.offsetWidth;
-    const h = mainWin.offsetHeight;
-
-    // Fixed endpoints as % of window — span hero to lower content
-    const configs = [
-      { x1: w*0.12, y1: 22,  x2: w*0.28, y2: h*0.44 },
-      { x1: w*0.38, y1: 18,  x2: w*0.52, y2: h*0.52 },
-      { x1: w*0.62, y1: 22,  x2: w*0.72, y2: h*0.60 },
-      { x1: w*0.82, y1: 18,  x2: w*0.40, y2: h*0.72 },
-      { x1: w*0.22, y1: 20,  x2: w*0.85, y2: h*0.48 },
-      { x1: w*0.50, y1: 16,  x2: w*0.15, y2: h*0.65 },
-    ];
-
-    const c     = configs[idx];
-    const phase = t + idx * 1.05;
-    const sway  = Math.sin(phase) * 14;
-
-    // Catenary-like hanging: control points sag below the line
-    const midX = (c.x1 + c.x2) / 2;
-    const midY = (c.y1 + c.y2) / 2;
-    const sag  = Math.min(150, Math.sqrt((c.x2-c.x1)**2 + (c.y2-c.y1)**2) * 0.35);
-
-    const cp1x = c.x1 + (midX - c.x1) * 0.4 + sway;
-    const cp1y = c.y1 + sag * 1.1 + Math.sin(phase * 0.7) * 8;
-    const cp2x = c.x2 + (midX - c.x2) * 0.4 - sway;
-    const cp2y = c.y2 - sag * 0.3 + Math.cos(phase * 0.5) * 6;
-
-    // Cursor repulsion (cables deflect away from mouse)
-    const cx = (cp1x + cp2x) / 2;
-    const cy = (cp1y + cp2y) / 2;
-    const dx = cx - mouseX;
-    const dy = cy - mouseY;
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    const repulse = Math.max(0, 1 - dist / 90) * 28;
-    const rx = (dx / dist) * repulse;
-    const ry = (dy / dist) * repulse;
-
-    return {
-      d: `M ${c.x1} ${c.y1} C ${cp1x + rx} ${cp1y + ry} ${cp2x + rx} ${cp2y + ry} ${c.x2} ${c.y2}`,
-      x1: c.x1, y1: c.y1, x2: c.x2, y2: c.y2,
-    };
-  }
-
-  function animateCables() {
-    t += 0.006;
-    const w = mainWin.offsetWidth;
-    if (w < 10) { requestAnimationFrame(animateCables); return; }
-
-    cableEls.forEach((el, i) => {
-      const c = getCable(i);
-      el.path.setAttribute('d', c.d);
-      el.jack1.setAttribute('cx', c.x1);
-      el.jack1.setAttribute('cy', c.y1);
-      el.jack2.setAttribute('cx', c.x2);
-      el.jack2.setAttribute('cy', c.y2);
-    });
-
-    requestAnimationFrame(animateCables);
-  }
-  animateCables();
 }
 
 /* ── DESKTOP ICONS ───────────────────────────────────────────── */
@@ -432,16 +314,16 @@ function initWindowButtons() {
   const close    = document.querySelector('.titlebar-btn.close');
 
   if (minimize) {
-    minimize.title = "Nice try 🐸";
-    minimize.addEventListener('click', () => showToast("You can't minimize a toad! 🐸"));
+    minimize.title = "Classic window control";
+    minimize.addEventListener('click', () => showToast('Minimize is disabled in this layout.'));
   }
   if (maximize) {
     maximize.title = "Already maximized!";
     maximize.addEventListener('click', () => showToast("Window is already full-screen!"));
   }
   if (close) {
-    close.title = "The toad stays! 🐸";
-    close.addEventListener('click', () => showToast("The toad refuses to close. 🐸"));
+    close.title = "Close is disabled here";
+    close.addEventListener('click', () => showToast("This window remains active."));
   }
 }
 
@@ -543,18 +425,18 @@ function initStartMenu() {
       gap:          '8px',
       borderBottom: '1px solid #000060',
     });
-    header.innerHTML = '<svg style="width:20px;height:20px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="9" r="4" fill="#52b788"/><circle cx="24" cy="9" r="4" fill="#52b788"/><circle cx="8" cy="9" r="2" fill="#000"/><circle cx="24" cy="9" r="2" fill="#000"/><ellipse cx="16" cy="19" rx="10.5" ry="8.5" fill="#52b788"/><ellipse cx="16" cy="20" rx="6.5" ry="5.5" fill="#95d5b2"/><path d="M11 23 Q16 26.5 21 23" stroke="#1b4332" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>'
+    header.innerHTML = '<img src="https://f4.bcbits.com/img/0038520380_10.jpg" alt="" style="width:20px;height:20px;object-fit:cover;border-radius:2px">'
       + '<span style="font-size:13px;font-weight:bold;line-height:1.3">Modular Toad<br>'
       + '<small style="font-size:10px;opacity:.8;font-weight:normal">Audio</small></span>';
     col.appendChild(header);
 
     const pages = [
-      { icon: '🏠', label: 'Home',      href: 'index.html'    },
-      { icon: '🎚️', label: 'Services',  href: 'services.html' },
-      { icon: '🎬', label: 'Portfolio', href: 'portfolio.html' },
-      { icon: '💰', label: 'Pricing',   href: 'pricing.html'  },
-      { icon: '🐸', label: 'About',     href: 'about.html'    },
-      { icon: '📧', label: 'Contact',   href: 'contact.html'  },
+      { icon: 'HM', label: 'Home',      href: 'index.html'    },
+      { icon: 'SV', label: 'Services',  href: 'services.html' },
+      { icon: 'PF', label: 'Portfolio', href: 'portfolio.html' },
+      { icon: 'PR', label: 'Pricing',   href: 'pricing.html'  },
+      { icon: 'AB', label: 'About',     href: 'about.html'    },
+      { icon: 'CT', label: 'Contact',   href: 'contact.html'  },
     ];
 
     pages.forEach(page => {
@@ -654,7 +536,7 @@ function initContactForm() {
   form.addEventListener('submit', () => {
     const btn = form.querySelector('button[type="submit"]');
     if (btn) {
-      btn.textContent = '📨 Sending…';
+      btn.textContent = 'Sending…';
       btn.disabled    = true;
     }
   });
@@ -697,6 +579,72 @@ function initBootSequence() {
   }, 60);
 }
 
+
+/* ── HOMEPAGE PORTFOLIO CAROUSEL ───────────────────────────── */
+async function initPortfolioPreviewCarousel() {
+  const track = document.getElementById('portfolioPreviewTrack');
+  const prev  = document.getElementById('portfolioPrev');
+  const next  = document.getElementById('portfolioNext');
+  if (!track || !prev || !next) return;
+
+  try {
+    const res = await fetch('portfolio.html', { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to load portfolio');
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const cards = Array.from(doc.querySelectorAll('#portfolioGrid .portfolio-item'));
+
+    const items = cards.map((card, idx) => {
+      const title = card.querySelector('.titlebar-title')?.textContent?.trim() || `Submission ${idx + 1}`;
+      const category = card.dataset.category || 'submission';
+      const iframe = card.querySelector('iframe');
+      const src = iframe?.getAttribute('src') || '';
+      return { title, category, src };
+    }).filter(item => item.title);
+
+    if (!items.length) {
+      track.innerHTML = '<p class="portfolio-preview-empty">Portfolio submissions will appear here automatically.</p>';
+      prev.disabled = true;
+      next.disabled = true;
+      return;
+    }
+
+    let index = 0;
+    const render = () => {
+      const item = items[index];
+      const media = item.src
+        ? `<div class="video-container"><iframe src="${item.src}" title="${item.title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
+        : '<div class="portfolio-preview-empty">Media preview unavailable for this submission.</div>';
+
+      track.innerHTML = `
+        <article class="portfolio-preview-card window">
+          <div class="window-titlebar">
+            <span class="titlebar-icon">PF</span>
+            <span class="titlebar-title">${item.title}</span>
+          </div>
+          ${media}
+          <div class="portfolio-preview-meta">Category: ${item.category}</div>
+        </article>`;
+    };
+
+    prev.addEventListener('click', () => {
+      index = (index - 1 + items.length) % items.length;
+      render();
+    });
+
+    next.addEventListener('click', () => {
+      index = (index + 1) % items.length;
+      render();
+    });
+
+    render();
+  } catch (_) {
+    track.innerHTML = '<p class="portfolio-preview-empty">Portfolio preview is temporarily unavailable.</p>';
+    prev.disabled = true;
+    next.disabled = true;
+  }
+}
+
 /* ── INIT ────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   updateClock();
@@ -705,7 +653,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initPS2Background();
   initHeroWaterShader();
   initMascotPoke();
-  initSynthCables();
   initNavigation();
   initDesktopIcons();
   initWindowButtons();
@@ -715,4 +662,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initServiceCardSounds();
   initPageAnimation();
   initBootSequence();
+  initPortfolioPreviewCarousel();
 });
