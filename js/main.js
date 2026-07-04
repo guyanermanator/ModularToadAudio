@@ -1,7 +1,8 @@
 /* ============================================================
    ModularToadAudio — main.js
-   Interactive behaviors: clock, navigation, start menu,
-   toast notifications, button sounds, mobile nav
+   Interactive behaviors: PS2 background, clock, navigation,
+   start menu, toast notifications, button sounds, mobile nav,
+   desktop icons
    ============================================================ */
 
 /* ── CLOCK ──────────────────────────────────────────────────── */
@@ -12,6 +13,125 @@ function updateClock() {
   const h = String(now.getHours()).padStart(2, '0');
   const m = String(now.getMinutes()).padStart(2, '0');
   el.textContent = `${h}:${m}`;
+}
+
+/* ── PS2 BIOS BACKGROUND CANVAS ─────────────────────────────── */
+function initPS2Background() {
+  const canvas = document.getElementById('bgCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let W = 0, H = 0;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  // Tower blocks — pixel-snapped widths/heights, slow upward drift
+  const TOWER_COUNT = 30;
+  const towers = [];
+
+  function makeTower(scatterY) {
+    const w = (1 + Math.floor(Math.random() * 2)) * 2;           // 2 or 4 px
+    const h = (2 + Math.floor(Math.random() * 10)) * 4;          // 8–44 px
+    const hue = 160 + Math.floor(Math.random() * 40);             // 160–200 (teal-cyan-blue)
+    return {
+      x:     Math.floor(Math.random() * W),
+      y:     scatterY ? Math.random() * H : H + h,
+      w, h,
+      speed: 0.25 + Math.random() * 0.55,
+      alpha: 0.07 + Math.random() * 0.15,
+      hue,
+    };
+  }
+
+  for (let i = 0; i < TOWER_COUNT; i++) towers.push(makeTower(true));
+
+  // Horizontal wave lines (PS2 ripple effect)
+  const WAVE_COUNT = 6;
+  const waves = [];
+  for (let i = 0; i < WAVE_COUNT; i++) {
+    waves.push({
+      y:     Math.random() * H,
+      speed: 0.15 + Math.random() * 0.25,
+      alpha: 0.04 + Math.random() * 0.06,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw tower blocks
+    towers.forEach(t => {
+      // Glow halo
+      ctx.globalAlpha = t.alpha * 0.28;
+      ctx.fillStyle = `hsl(${t.hue}, 85%, 65%)`;
+      ctx.fillRect(t.x - 1, Math.floor(t.y) - 1, t.w + 2, t.h + 2);
+      // Core block
+      ctx.globalAlpha = t.alpha;
+      ctx.fillStyle = `hsl(${t.hue}, 100%, 72%)`;
+      ctx.fillRect(t.x, Math.floor(t.y), t.w, t.h);
+
+      t.y -= t.speed;
+      if (t.y + t.h < 0) {
+        const fresh = makeTower(false);
+        Object.assign(t, fresh);
+      }
+    });
+
+    // Draw horizontal wave lines
+    waves.forEach(w => {
+      ctx.globalAlpha = w.alpha;
+      ctx.fillStyle = 'hsl(185, 90%, 68%)';
+      ctx.fillRect(0, Math.floor(w.y), W, 1);
+      w.y -= w.speed;
+      if (w.y < 0) { w.y = H; w.alpha = 0.04 + Math.random() * 0.06; }
+    });
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+}
+
+/* ── DESKTOP ICONS ───────────────────────────────────────────── */
+function initDesktopIcons() {
+  const icons = document.querySelectorAll('.desktop-icon');
+  if (!icons.length) return;
+
+  const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+
+  icons.forEach(icon => {
+    const href = icon.getAttribute('href') || '';
+    if (href === currentFile || (currentFile === '' && href === 'index.html')) {
+      icon.classList.add('icon-active');
+    }
+
+    icon.addEventListener('mouseenter', () => playBlip(660, 0.025, 'sine', 0.02));
+
+    icon.addEventListener('click', () => {
+      icons.forEach(i => i.classList.remove('icon-active'));
+      icon.classList.add('icon-active');
+      playBlip(880, 0.05, 'square', 0.04);
+    });
+  });
+
+  // Deselect on desktop background click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.desktop-icon')) {
+      const cur = window.location.pathname.split('/').pop() || 'index.html';
+      icons.forEach(i => {
+        const h = i.getAttribute('href') || '';
+        if (h !== cur && !(cur === '' && h === 'index.html')) {
+          i.classList.remove('icon-active');
+        }
+      });
+    }
+  });
 }
 
 /* ── NAVIGATION ─────────────────────────────────────────────── */
@@ -119,33 +239,64 @@ function initStartMenu() {
     Object.assign(menu.style, {
       position:   'fixed',
       bottom:     '44px',
-      left:       '8px',
+      left:       '0',
       background: '#c0c0c0',
       border:     '2px solid',
       borderColor:'#fff #808080 #808080 #fff',
       boxShadow:  '3px 3px 0 #404040',
       zIndex:     '9999',
-      minWidth:   '210px',
+      minWidth:   '220px',
       fontFamily: '"MS Sans Serif", Arial, sans-serif',
       fontSize:   '12px',
       animation:  'windowOpen .1s ease-out',
+      display:    'flex',
     });
+
+    // Win98-style vertical sidebar strip
+    const sidebar = document.createElement('div');
+    Object.assign(sidebar.style, {
+      background: 'linear-gradient(to top, #000080 0%, #1084d0 100%)',
+      width:      '22px',
+      display:    'flex',
+      alignItems: 'flex-end',
+      justifyContent: 'center',
+      padding:    '6px 0',
+      flexShrink: '0',
+    });
+    const sideText = document.createElement('span');
+    Object.assign(sideText.style, {
+      color:       'rgba(255,255,255,.25)',
+      fontSize:    '11px',
+      fontWeight:  'bold',
+      writingMode: 'vertical-rl',
+      transform:   'rotate(180deg)',
+      letterSpacing: '1px',
+      userSelect:  'none',
+      fontFamily:  '"MS Sans Serif", Arial, sans-serif',
+    });
+    sideText.textContent = 'ModularToadAudio';
+    sidebar.appendChild(sideText);
+    menu.appendChild(sidebar);
+
+    // Menu content column
+    const col = document.createElement('div');
+    col.style.flex = '1';
 
     // Header strip
     const header = document.createElement('div');
     Object.assign(header.style, {
-      background: 'linear-gradient(to bottom, #000080, #1084d0)',
-      color:      '#fff',
-      padding:    '10px 10px',
-      display:    'flex',
-      alignItems: 'center',
-      gap:        '8px',
+      background:   'linear-gradient(to bottom, #000080, #1084d0)',
+      color:        '#fff',
+      padding:      '10px 12px',
+      display:      'flex',
+      alignItems:   'center',
+      gap:          '8px',
       borderBottom: '1px solid #000060',
     });
     header.innerHTML = '<span style="font-size:20px">🐸</span>'
       + '<span style="font-size:13px;font-weight:bold;line-height:1.3">Modular Toad<br>'
       + '<small style="font-size:10px;opacity:.8;font-weight:normal">Audio</small></span>';
-    menu.appendChild(header);
+    col.appendChild(header);
 
     const pages = [
       { icon: '🏠', label: 'Home',      href: 'index.html'    },
@@ -161,27 +312,29 @@ function initStartMenu() {
       link.href = page.href;
       link.setAttribute('role', 'menuitem');
       Object.assign(link.style, {
-        display:       'flex',
-        alignItems:    'center',
-        gap:           '10px',
-        padding:       '8px 14px',
-        color:         '#000',
-        textDecoration:'none',
-        borderBottom:  '1px solid #d4d0c8',
-        transition:    'background .05s, color .05s',
+        display:        'flex',
+        alignItems:     'center',
+        gap:            '10px',
+        padding:        '8px 14px',
+        color:          '#000',
+        textDecoration: 'none',
+        borderBottom:   '1px solid #d4d0c8',
+        transition:     'background .05s, color .05s',
       });
       link.innerHTML = `<span style="font-size:15px">${page.icon}</span>${page.label}`;
       link.addEventListener('mouseenter', () => {
         link.style.background = '#000080';
         link.style.color      = '#fff';
+        playBlip(660, 0.03, 'square', 0.03);
       });
       link.addEventListener('mouseleave', () => {
         link.style.background = '';
         link.style.color      = '#000';
       });
-      menu.appendChild(link);
+      col.appendChild(link);
     });
 
+    menu.appendChild(col);
     document.body.appendChild(menu);
 
     // Close when clicking outside
@@ -301,9 +454,11 @@ function initBootSequence() {
 /* ── INIT ────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   updateClock();
-  setInterval(updateClock, 30000);
+  setInterval(updateClock, 1000);
 
+  initPS2Background();
   initNavigation();
+  initDesktopIcons();
   initWindowButtons();
   initStartMenu();
   initButtonSounds();
