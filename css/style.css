@@ -8,17 +8,22 @@
 
 /* ── CSS CUSTOM PROPERTIES ─────────────────────────────────── */
 :root {
-  /* Win98 base palette */
-  --gray:        #c0c0c0;
-  --gray-light:  #d4d0c8;
-  --gray-dark:   #808080;
-  --gray-darker: #404040;
-  --white:       #ffffff;
-  --black:       #000000;
+  /* Dark metallic panel palette (MGS3 / PS2 / modular synth inspired) */
+  --gray:        #1a2218;   /* structural chrome — navbar, taskbar, window frames */
+  --gray-light:  #202c20;   /* raised surfaces — cards, panels */
+  --gray-dark:   #3d5040;   /* mid-tone borders, separators */
+  --gray-darker: #0a0e0a;   /* deep shadows */
+  --white:       #ffffff;   /* form inputs, explicit white backgrounds */
+  --black:       #050908;
 
-  /* Title-bar gradients */
+  /* Text on dark backgrounds */
+  --text-primary: #b8d4bc;
+  --text-bright:  #d8eedc;
+  --text-muted:   #567060;
+
+  /* Title-bar gradients — keep the iconic blue */
   --titlebar-active:   linear-gradient(to right, #000080 0%, #1084d0 100%);
-  --titlebar-inactive: linear-gradient(to right, #7b7b7b 0%, #b5b5b5 100%);
+  --titlebar-inactive: linear-gradient(to right, #1a2a1a 0%, #304030 100%);
 
   /* Brand / Toad palette */
   --toad-darkest: #0d2b1f;
@@ -29,10 +34,14 @@
   --toad-pale:    #95d5b2;
   --toad-accent:  #b7e4c7;
 
-  /* Win98 border helpers */
-  --bdr-lt: #ffffff;
-  --bdr-dk: #808080;
-  --bdr-xx: #404040;
+  /* Amber / synth accent */
+  --amber:        #c07808;
+  --amber-bright: #e09a18;
+
+  /* Border helpers — dark metallic bevel */
+  --bdr-lt: #3a5040;
+  --bdr-dk: #070c08;
+  --bdr-xx: #030503;
 
   /* Typography */
   --font-pixel: 'Press Start 2P', 'Courier New', monospace;
@@ -56,12 +65,12 @@ body {
   font-family: var(--font-body);
   background-color: #006868;
   min-height: 100vh;
-  color: var(--black);
+  color: var(--text-primary);
   overflow-x: hidden;
 }
 
-a { color: #0000cc; text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { color: var(--toad-light); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--toad-pale); }
 img, svg { display: block; max-width: 100%; }
 
 /* ── DESKTOP SHELL ──────────────────────────────────────────── */
@@ -201,14 +210,14 @@ img, svg { display: block; max-width: 100%; }
   gap: 6px;
   font-family: var(--font-pixel);
   font-size: 7px;
-  color: var(--toad-dark);
+  color: var(--toad-light);
   text-decoration: none;
   padding: 4px 10px;
   white-space: nowrap;
   flex-shrink: 0;
   line-height: 1.4;
 }
-.navbar-brand:hover { text-decoration: none; color: var(--toad-mid); }
+.navbar-brand:hover { text-decoration: none; color: var(--toad-pale); }
 .toad-icon { font-size: 20px; line-height: 1; }
 
 .nav-sep {
@@ -231,7 +240,7 @@ img, svg { display: block; max-width: 100%; }
   display: inline-block;
   padding: 6px 11px;
   font-size: 12px;
-  color: var(--black);
+  color: var(--text-bright);
   text-decoration: none;
   border: 2px solid transparent;
   white-space: nowrap;
@@ -250,6 +259,7 @@ img, svg { display: block; max-width: 100%; }
 .nav-toggle {
   display: none;
   background: var(--gray);
+  color: var(--text-bright);
   border: 2px solid;
   border-color: var(--bdr-lt) var(--bdr-dk) var(--bdr-dk) var(--bdr-lt);
   padding: 4px 10px;
@@ -299,7 +309,7 @@ img, svg { display: block; max-width: 100%; }
 .titlebar-btn:active { border-color: var(--bdr-dk) var(--bdr-lt) var(--bdr-lt) var(--bdr-dk); }
 .titlebar-btn.close:hover { background: #ff4040; color: var(--white); }
 
-.window-body { padding: 16px; }
+.window-body { padding: 16px; color: var(--text-primary); }
 
 /* ── PANELS ─────────────────────────────────────────────────── */
 .panel-inset {
@@ -307,6 +317,7 @@ img, svg { display: block; max-width: 100%; }
   border-color: var(--bdr-dk) var(--bdr-lt) var(--bdr-lt) var(--bdr-dk);
   background: var(--white);
   padding: 16px;
+  color: var(--black);
 }
 
 .panel-raised {
@@ -314,6 +325,7 @@ img, svg { display: block; max-width: 100%; }
   border-color: var(--bdr-lt) var(--bdr-dk) var(--bdr-dk) var(--bdr-lt);
   background: var(--gray-light);
   padding: 16px;
+  color: var(--text-primary);
 }
 
 /* ── BUTTONS ────────────────────────────────────────────────── */
@@ -348,13 +360,13 @@ img, svg { display: block; max-width: 100%; }
 }
 
 .btn-secondary {
-  background: var(--gray);
-  color: var(--black);
+  background: var(--gray-light);
+  color: var(--text-bright);
   border: 2px solid;
   border-color: var(--bdr-lt) var(--bdr-dk) var(--bdr-dk) var(--bdr-lt);
   box-shadow: 2px 2px 0 var(--bdr-xx);
 }
-.btn-secondary:hover { background: var(--gray-light); text-decoration: none; }
+.btn-secondary:hover { background: var(--gray-dark); color: var(--white); text-decoration: none; }
 .btn-secondary:active {
   border-color: var(--bdr-dk) var(--bdr-lt) var(--bdr-lt) var(--bdr-dk);
   transform: translate(1px,1px);
@@ -370,6 +382,7 @@ img, svg { display: block; max-width: 100%; }
   font-size: 12px;
   font-weight: bold;
   margin-bottom: 4px;
+  color: var(--text-bright);
 }
 
 .form-input,
@@ -435,24 +448,48 @@ img, svg { display: block; max-width: 100%; }
 .section-title {
   font-family: var(--font-pixel);
   font-size: 9px;
-  color: var(--toad-dark);
+  color: var(--toad-light);
   margin-bottom: 14px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--toad-pale);
+  border-bottom: 2px solid var(--toad-dark);
   text-transform: uppercase;
   letter-spacing: 1px;
   line-height: 1.6;
+}
+
+/* ── HERO WATER SHADER CANVAS ───────────────────────────────── */
+#heroWater {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
 }
 
 /* ── HERO ────────────────────────────────────────────────────── */
 .hero {
   text-align: center;
   padding: 36px 20px;
-  background: linear-gradient(135deg, var(--toad-darkest) 0%, var(--toad-dark) 40%, var(--toad-mid) 100%);
+  background: linear-gradient(135deg, #050c08 0%, var(--toad-darkest) 40%, #0d2820 100%);
   color: var(--white);
   position: relative;
   overflow: hidden;
 }
+
+/* ── SYNTH CABLE SVG OVERLAY ─────────────────────────────────── */
+#synthCables {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+#synthCables path {
+  filter: drop-shadow(0 0 2px currentColor);
+}
+.main-window { position: relative; }
 
 /* scanline overlay */
 .hero::after {
@@ -481,6 +518,65 @@ img, svg { display: block; max-width: 100%; }
   animation: toadFloat 4s ease-in-out infinite;
 }
 
+/* ── NEW MASCOT: image with PS2 memory card effect ──────────── */
+.hero-mascot-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.hero-mascot-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+  filter: drop-shadow(0 0 6px rgba(0,220,255,.35)) drop-shadow(3px 3px 0 rgba(0,0,0,.55));
+  animation: toadFloat 4s ease-in-out infinite;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.hero-mascot-wrapper.poked .hero-mascot-img {
+  animation: toadPoke 0.7s cubic-bezier(.36,.07,.19,.97) forwards;
+}
+/* PS2 memory-card shimmer sweep */
+.mascot-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(0, 255, 200, 0.25) 50%,
+    transparent 80%
+  );
+  background-size: 200% 200%;
+  animation: ps2MascotShimmer 3.5s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: 4px;
+}
+/* LED border pulse on mascot */
+.hero-mascot-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 220, 255, 0.3);
+  animation: mascotBorderPulse 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── ABOUT PAGE MASCOT ──────────────────────────────────────── */
+.about-mascot-img {
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: 4px;
+  filter: drop-shadow(0 0 5px rgba(0,220,255,.25));
+  display: block;
+  margin: 0 auto;
+}
+
 .hero-title {
   font-family: var(--font-pixel);
   font-size: clamp(11px, 2.5vw, 18px);
@@ -493,7 +589,8 @@ img, svg { display: block; max-width: 100%; }
   line-height: 1.6;
   position: relative;
   z-index: 1;
-  animation: ps2TitlePulse 4s ease-in-out infinite;
+  animation: heroTitleAnim 10s ease-in-out infinite;
+  cursor: default;
 }
 
 .hero-tagline {
@@ -526,9 +623,12 @@ img, svg { display: block; max-width: 100%; }
   padding: 14px;
   background: var(--gray-light);
   cursor: default;
-  transition: background .1s;
+  transition: background .1s, box-shadow .1s;
 }
-.service-card:hover { background: var(--toad-accent); }
+.service-card:hover { 
+  background: var(--toad-darkest);
+  box-shadow: inset 0 0 8px rgba(82, 183, 136, 0.12);
+}
 
 .service-card-icon {
   font-size: 26px;
@@ -539,11 +639,11 @@ img, svg { display: block; max-width: 100%; }
   font-size: 12px;
   font-weight: bold;
   margin-bottom: 6px;
-  color: var(--toad-dark);
+  color: var(--toad-light);
 }
 .service-card p {
   font-size: 12px;
-  color: var(--gray-darker);
+  color: var(--text-muted);
   line-height: 1.5;
 }
 
@@ -563,22 +663,22 @@ img, svg { display: block; max-width: 100%; }
   font-size: 13px;
   font-weight: bold;
   margin-bottom: 6px;
-  color: var(--toad-dark);
+  color: var(--toad-light);
 }
 .service-row-body p {
   font-size: 12px;
-  color: var(--gray-darker);
+  color: var(--text-muted);
   line-height: 1.6;
 }
 .service-tags { margin-top: 6px; }
 
 .tag-pill {
   display: inline-block;
-  background: var(--toad-pale);
-  color: var(--toad-dark);
+  background: var(--toad-darkest);
+  color: var(--toad-light);
   font-size: 10px;
   padding: 2px 8px;
-  border: 1px solid var(--toad-light);
+  border: 1px solid var(--toad-dark);
   margin: 2px 2px 0 0;
 }
 
@@ -649,23 +749,24 @@ img, svg { display: block; max-width: 100%; }
   padding: 18px;
   text-align: center;
   background: var(--gray-light);
+  color: var(--text-primary);
 }
 .price-amount {
   font-family: var(--font-pixel);
   font-size: 20px;
-  color: var(--toad-dark);
+  color: var(--toad-light);
   display: block;
   margin-bottom: 4px;
 }
 .price-period {
   font-size: 11px;
-  color: var(--gray-dark);
+  color: var(--text-muted);
   display: block;
   margin-bottom: 14px;
 }
 .price-strike {
   text-decoration: line-through;
-  color: var(--gray-dark);
+  color: var(--text-muted);
   font-size: 13px;
   margin-bottom: 2px;
 }
@@ -683,8 +784,17 @@ img, svg { display: block; max-width: 100%; }
   align-items: flex-start;
   gap: 6px;
   line-height: 1.4;
+  color: var(--text-primary);
 }
-.pricing-features li::before { content: '▶'; color: var(--toad-mid); font-size: 9px; flex-shrink: 0; margin-top: 2px; }
+.pricing-features li::before { content: '▶'; color: var(--toad-light); font-size: 9px; flex-shrink: 0; margin-top: 2px; }
+
+/* ── FAQ DETAILS ────────────────────────────────────────────── */
+details {
+  color: var(--text-primary);
+}
+details summary {
+  color: var(--text-bright);
+}
 
 /* ── TESTIMONIALS ───────────────────────────────────────────── */
 .testimonial-grid {
@@ -695,7 +805,7 @@ img, svg { display: block; max-width: 100%; }
 
 .testimonial-card {
   padding: 18px 16px 14px;
-  background: var(--white);
+  background: var(--gray-light);
   border: 2px solid;
   border-color: var(--bdr-dk) var(--bdr-lt) var(--bdr-lt) var(--bdr-dk);
   position: relative;
@@ -704,7 +814,7 @@ img, svg { display: block; max-width: 100%; }
   content: '\201C';
   font-family: Georgia, serif;
   font-size: 52px;
-  color: var(--toad-pale);
+  color: var(--toad-dark);
   position: absolute;
   top: -8px; left: 10px;
   line-height: 1;
@@ -714,12 +824,12 @@ img, svg { display: block; max-width: 100%; }
   line-height: 1.65;
   margin-bottom: 8px;
   padding-top: 18px;
-  color: var(--gray-darker);
+  color: var(--text-primary);
 }
 cite {
   font-size: 11px;
   font-style: italic;
-  color: var(--toad-mid);
+  color: var(--toad-light);
 }
 
 /* ── CONTACT ─────────────────────────────────────────────────── */
@@ -739,7 +849,7 @@ cite {
 .contact-info-panel h3 {
   font-family: var(--font-pixel);
   font-size: 8px;
-  color: var(--toad-dark);
+  color: var(--toad-light);
   margin-bottom: 16px;
   line-height: 1.6;
 }
@@ -752,7 +862,7 @@ cite {
   line-height: 1.5;
 }
 .contact-detail-icon { font-size: 18px; flex-shrink: 0; }
-.contact-detail a { color: var(--toad-mid); word-break: break-all; }
+.contact-detail a { color: var(--toad-light); word-break: break-all; }
 
 /* ── CTA BAND ────────────────────────────────────────────────── */
 .cta-band {
@@ -780,12 +890,12 @@ cite {
 }
 .about-mascot { text-align: center; }
 .about-mascot svg { width: 128px; height: 128px; image-rendering: pixelated; margin: 0 auto; }
-.about-mascot-label { font-size: 10px; font-family: var(--font-pixel); color: var(--toad-mid); margin-top: 6px; }
+.about-mascot-label { font-size: 10px; font-family: var(--font-pixel); color: var(--toad-light); margin-top: 6px; }
 
 .about-text h2 {
   font-family: var(--font-pixel);
   font-size: 9px;
-  color: var(--toad-dark);
+  color: var(--toad-light);
   margin-bottom: 12px;
   line-height: 1.6;
 }
@@ -793,7 +903,7 @@ cite {
   font-size: 13px;
   line-height: 1.75;
   margin-bottom: 12px;
-  color: var(--gray-darker);
+  color: var(--text-primary);
 }
 
 .values-grid {
@@ -810,8 +920,8 @@ cite {
   text-align: center;
 }
 .value-card-icon { font-size: 28px; margin-bottom: 8px; }
-.value-card h4 { font-size: 12px; font-weight: bold; color: var(--toad-dark); margin-bottom: 4px; }
-.value-card p { font-size: 11px; color: var(--gray-darker); line-height: 1.5; }
+.value-card h4 { font-size: 12px; font-weight: bold; color: var(--toad-light); margin-bottom: 4px; }
+.value-card p { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
 
 /* ── NOTICE BOXES ───────────────────────────────────────────── */
 .notice {
@@ -823,10 +933,12 @@ cite {
   margin: 12px 0;
   border: 2px solid;
   line-height: 1.5;
+  color: var(--text-primary);
 }
-.notice-info    { background: #e8f4fd; border-color: #1084d0; }
-.notice-success { background: #edfbf3; border-color: var(--toad-light); }
-.notice-warning { background: #fffde7; border-color: #f9a825; }
+.notice a { color: var(--toad-light); }
+.notice-info    { background: #0a1820; border-color: #1084d0; }
+.notice-success { background: #081808; border-color: var(--toad-light); }
+.notice-warning { background: #1c1408; border-color: var(--amber-bright); color: #e0c070; }
 .notice-icon { font-size: 18px; flex-shrink: 0; }
 
 /* ── TASKBAR ─────────────────────────────────────────────────── */
@@ -847,6 +959,7 @@ cite {
 
 .start-btn {
   background: var(--gray);
+  color: var(--text-bright);
   border: 2px solid;
   border-color: var(--bdr-lt) var(--bdr-dk) var(--bdr-dk) var(--bdr-lt);
   padding: 3px 12px;
@@ -860,7 +973,7 @@ cite {
   box-shadow: 1px 1px 0 var(--bdr-xx);
   white-space: nowrap;
 }
-.start-btn:hover { background: var(--toad-accent); }
+.start-btn:hover { background: var(--toad-dark); color: var(--white); }
 .start-btn:active {
   border-color: var(--bdr-dk) var(--bdr-lt) var(--bdr-lt) var(--bdr-dk);
   box-shadow: none;
@@ -887,6 +1000,7 @@ cite {
   white-space: nowrap;
   overflow: hidden;
   max-width: 200px;
+  color: var(--text-muted);
 }
 
 .taskbar-clock {
@@ -895,9 +1009,12 @@ cite {
   border: 2px solid;
   border-color: var(--bdr-dk) var(--bdr-lt) var(--bdr-lt) var(--bdr-dk);
   background: var(--gray-light);
+  color: var(--text-bright);
   white-space: nowrap;
   min-width: 55px;
   text-align: center;
+  flex-shrink: 0;
+}
   flex-shrink: 0;
 }
 
@@ -908,13 +1025,14 @@ cite {
   display: flex;
   gap: 6px;
   font-size: 11px;
-  color: var(--gray-darker);
+  color: var(--text-muted);
   background: var(--gray);
   flex-wrap: wrap;
 }
 .status-item {
   border: 1px solid var(--bdr-dk);
   padding: 2px 6px;
+  color: var(--text-muted);
 }
 
 /* ── DECORATIVE HELPERS ─────────────────────────────────────── */
@@ -944,7 +1062,34 @@ cite {
   color: var(--toad-light);
 }
 
-/* PS2 BIOS title glow pulse */
+/* Combined PS2 pulse + glitch for hero title */
+@keyframes heroTitleAnim {
+  0%, 100% {
+    text-shadow:
+      0 0 8px var(--ps2-glow-bright), 0 0 20px var(--ps2-glow-mid),
+      2px 2px 0 var(--toad-dark), 4px 4px 0 rgba(0,0,0,.45);
+    transform: none;
+    color: #fff;
+  }
+  20% {
+    text-shadow:
+      0 0 14px rgba(0,220,255,.95), 0 0 32px rgba(0,180,255,.65),
+      0 0 54px rgba(0,140,255,.28),
+      2px 2px 0 var(--toad-dark), 4px 4px 0 rgba(0,0,0,.45);
+    color: #e0ffff;
+  }
+  /* glitch burst */
+  72%  { text-shadow: -3px 0 #ff0088, 3px 0 #00ffcc; transform: translateX(-3px); color: #fff; }
+  73%  { text-shadow: 3px 0 #ff0088, -3px 0 #00ffcc; transform: translateX(3px); color: #ffe0ff; }
+  74%  { text-shadow: -2px 0 #ffcc00, 2px 0 #00ccff; transform: translateX(-1px) skewX(-2deg); }
+  75%  {
+    text-shadow: 0 0 8px var(--ps2-glow-bright), 0 0 20px var(--ps2-glow-mid),
+      2px 2px 0 var(--toad-dark), 4px 4px 0 rgba(0,0,0,.45);
+    transform: none; color: #fff;
+  }
+}
+
+/* PS2 BIOS title glow pulse (kept for fallback) */
 @keyframes ps2TitlePulse {
   0%, 100% {
     text-shadow:
@@ -964,6 +1109,48 @@ cite {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   33%       { transform: translateY(-5px) rotate(-1deg); }
   66%       { transform: translateY(-2px) rotate(1deg); }
+}
+
+/* Mascot poke reaction */
+@keyframes toadPoke {
+  0%   { transform: translateY(0)    rotate(0deg)   scale(1); }
+  15%  { transform: translateY(-22px) rotate(-14deg) scale(0.82); }
+  30%  { transform: translateY(5px)  rotate(9deg)   scale(1.14); }
+  50%  { transform: translateY(-12px) rotate(-6deg)  scale(0.94); }
+  70%  { transform: translateY(3px)  rotate(4deg)   scale(1.05); }
+  85%  { transform: translateY(-4px) rotate(-1deg)  scale(0.98); }
+  100% { transform: translateY(0)    rotate(0deg)   scale(1); }
+}
+
+/* PS2 memory card shimmer */
+@keyframes ps2MascotShimmer {
+  0%   { background-position: 200% 0%; opacity: 0; }
+  30%  { opacity: 0; }
+  45%  { opacity: 1; background-position: 50% 50%; }
+  60%  { opacity: 0; background-position: -100% 100%; }
+  100% { opacity: 0; }
+}
+
+/* Mascot border pulse */
+@keyframes mascotBorderPulse {
+  0%, 100% { border-color: rgba(0,220,255,0.2); box-shadow: 0 0 4px rgba(0,220,255,0.1); }
+  50%      { border-color: rgba(0,220,255,0.55); box-shadow: 0 0 10px rgba(0,220,255,0.3); }
+}
+
+/* ── TWO-TONE FROG SVG ICON ─────────────────────────────────── */
+.toad-svg-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.toad-icon .toad-svg-icon {
+  width: 22px;
+  height: 22px;
+}
+.desktop-icon-emoji .toad-svg-icon {
+  width: 26px;
+  height: 26px;
+  filter: drop-shadow(1px 1px 0 rgba(0,0,0,.8)) drop-shadow(-1px 0 0 rgba(0,0,0,.5));
 }
 
 /* ── UTILITY ─────────────────────────────────────────────────── */
@@ -989,7 +1176,7 @@ cite {
     z-index: 999;
   }
   .navbar-menu.open { display: flex; }
-  .nav-item { width: 100%; padding: 12px 16px; border-bottom: 1px solid var(--bdr-dk); }
+  .nav-item { width: 100%; padding: 12px 16px; border-bottom: 1px solid var(--bdr-dk); color: var(--text-bright); }
   .nav-toggle { display: block; }
 
   .services-grid     { grid-template-columns: 1fr 1fr; }
