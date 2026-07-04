@@ -5,15 +5,28 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: deploy-neocities
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - name: Prepare deploy directory
+        run: |
+          rm -rf public
+          mkdir -p public
+          cp ./*.html public/
+          cp -R css public/css
+          cp -R js public/js
+
       - name: Deploy to Neocities
-        uses: bcomnes/deploy-to-neocities@v2.1.0
+        uses: bcomnes/deploy-to-neocities@v3.0.5
         with:
-          api_token: ${{ secrets.NEOCITIES_API_TOKEN }}
+          api_key: ${{ secrets.NEOCITIES_API_TOKEN }}
           cleanup: false
-          dist_dir: .
+          preview_before_deploy: true
+          dist_dir: public
