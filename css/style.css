@@ -41,6 +41,11 @@
   /* Layout */
   --nav-h:  44px;
   --task-h: 40px;
+
+  /* PS2 BIOS atmospheric accents */
+  --ps2-glow-bright: rgba(0, 220, 255, 0.75);
+  --ps2-glow-mid:    rgba(0, 160, 220, 0.4);
+  --ps2-glow-dim:    rgba(0, 100, 180, 0.18);
 }
 
 /* ── RESET ──────────────────────────────────────────────────── */
@@ -49,7 +54,7 @@ html { font-size: 13px; scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
-  background-color: #008080;
+  background-color: #006868;
   min-height: 100vh;
   color: var(--black);
   overflow-x: hidden;
@@ -66,10 +71,112 @@ img, svg { display: block; max-width: 100%; }
   flex-direction: column;
   padding-top: var(--nav-h);
   padding-bottom: var(--task-h);
-  background-color: #008080;
+  background-color: #006868;
   background-image:
-    radial-gradient(circle at 15% 15%, rgba(0,96,0,.18) 0%, transparent 55%),
-    radial-gradient(circle at 85% 85%, rgba(0,0,96,.12) 0%, transparent 55%);
+    radial-gradient(ellipse at 20% 25%, rgba(0,40,120,.32) 0%, transparent 52%),
+    radial-gradient(ellipse at 80% 75%, rgba(0,80,60,.22) 0%, transparent 52%),
+    radial-gradient(ellipse at 50% 50%, rgba(0,0,40,.18) 0%, transparent 70%);
+  position: relative;
+}
+
+/* Scanline CRT overlay — covers desktop area only, non-interactive */
+.desktop::before {
+  content: '';
+  position: fixed;
+  top: var(--nav-h); left: 0; right: 0; bottom: var(--task-h);
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px, transparent 1px,
+    rgba(0,0,0,.03) 1px, rgba(0,0,0,.03) 2px
+  );
+  pointer-events: none;
+  z-index: 500;
+}
+
+/* Pixel-dither checkerboard grain */
+.desktop::after {
+  content: '';
+  position: fixed;
+  top: var(--nav-h); left: 0; right: 0; bottom: var(--task-h);
+  background-image:
+    repeating-conic-gradient(rgba(0,0,0,.012) 0% 25%, transparent 0% 50%);
+  background-size: 4px 4px;
+  pointer-events: none;
+  z-index: 499;
+}
+
+/* ── PS2 BIOS BACKGROUND CANVAS ─────────────────────────────── */
+#bgCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .65;
+}
+
+/* ── DESKTOP ICONS (Win98 fixed-left shortcuts) ──────────────── */
+.desktop-icons {
+  position: fixed;
+  left: 8px;
+  top: calc(var(--nav-h) + 8px);
+  bottom: calc(var(--task-h) + 8px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 100;
+  pointer-events: none;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.desktop-icons::-webkit-scrollbar { display: none; }
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 4px;
+  cursor: pointer;
+  width: 72px;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid transparent;
+  pointer-events: all;
+  user-select: none;
+}
+.desktop-icon:hover {
+  background: rgba(0, 0, 128, .52);
+  border-color: rgba(255, 255, 255, .65);
+  color: #fff;
+  text-decoration: none;
+}
+.desktop-icon:active,
+.desktop-icon.icon-active {
+  background: rgba(0, 0, 128, .75);
+  border-color: rgba(255, 255, 255, .9);
+  color: #fff;
+  text-decoration: none;
+}
+.desktop-icon-emoji {
+  font-size: 26px;
+  line-height: 1;
+  display: block;
+  filter: drop-shadow(1px 1px 0 rgba(0,0,0,.8)) drop-shadow(-1px 0 0 rgba(0,0,0,.5));
+}
+.desktop-icon-label {
+  font-family: var(--font-pixel);
+  font-size: 6px;
+  text-shadow: 1px 1px 0 #000, -1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000;
+  line-height: 1.5;
+  word-break: break-word;
+  max-width: 68px;
+}
+
+/* Only show desktop icons when there's room beside the 980px window */
+@media (max-width: 1100px) {
+  .desktop-icons { display: none; }
 }
 
 /* ── NAVIGATION ─────────────────────────────────────────────── */
@@ -311,6 +418,8 @@ img, svg { display: block; max-width: 100%; }
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  position: relative;
+  z-index: 1;
 }
 
 .main-window {
@@ -369,6 +478,7 @@ img, svg { display: block; max-width: 100%; }
   width: 96px; height: 96px;
   image-rendering: pixelated;
   filter: drop-shadow(3px 3px 0 rgba(0,0,0,.55));
+  animation: toadFloat 4s ease-in-out infinite;
 }
 
 .hero-title {
@@ -376,10 +486,14 @@ img, svg { display: block; max-width: 100%; }
   font-size: clamp(11px, 2.5vw, 18px);
   color: var(--white);
   margin-bottom: 10px;
-  text-shadow: 2px 2px 0 var(--toad-dark), 4px 4px 0 rgba(0,0,0,.45);
+  text-shadow:
+    0 0 8px var(--ps2-glow-bright),
+    0 0 20px var(--ps2-glow-mid),
+    2px 2px 0 var(--toad-dark), 4px 4px 0 rgba(0,0,0,.45);
   line-height: 1.6;
   position: relative;
   z-index: 1;
+  animation: ps2TitlePulse 4s ease-in-out infinite;
 }
 
 .hero-tagline {
@@ -828,6 +942,28 @@ cite {
   content: '█';
   animation: blink 1s step-end infinite;
   color: var(--toad-light);
+}
+
+/* PS2 BIOS title glow pulse */
+@keyframes ps2TitlePulse {
+  0%, 100% {
+    text-shadow:
+      0 0 8px var(--ps2-glow-bright), 0 0 20px var(--ps2-glow-mid),
+      2px 2px 0 var(--toad-dark), 4px 4px 0 rgba(0,0,0,.45);
+  }
+  50% {
+    text-shadow:
+      0 0 14px rgba(0,220,255,.95), 0 0 32px rgba(0,180,255,.65),
+      0 0 54px rgba(0,140,255,.28),
+      2px 2px 0 var(--toad-dark), 4px 4px 0 rgba(0,0,0,.45);
+  }
+}
+
+/* Toad mascot gentle float */
+@keyframes toadFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-5px) rotate(-1deg); }
+  66%       { transform: translateY(-2px) rotate(1deg); }
 }
 
 /* ── UTILITY ─────────────────────────────────────────────────── */
