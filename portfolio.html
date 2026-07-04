@@ -21,7 +21,8 @@
     .filter-btn {
       padding: 5px 12px;
       font-size: 11px;
-      background: var(--gray);
+      background: var(--gray-light);
+      color: var(--text-bright);
       border: 2px solid;
       border-color: var(--bdr-lt) var(--bdr-dk) var(--bdr-dk) var(--bdr-lt);
       cursor: pointer;
@@ -42,7 +43,7 @@
       align-items: center;
       justify-content: center;
       padding: 32px 20px;
-      background: #111;
+      background: #060e08;
       color: #95d5b2;
       font-family: 'Courier New', monospace;
       font-size: 11px;
@@ -130,8 +131,7 @@
           <!-- Filter buttons (JS-optional, still accessible) -->
           <div class="portfolio-filter" role="group" aria-label="Filter by category">
             <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="mixing">Mixing</button>
-            <button class="filter-btn" data-filter="mastering">Mastering</button>
+            <button class="filter-btn" data-filter="mix-master">Mix &amp; Master</button>
             <button class="filter-btn" data-filter="podcast">Podcast</button>
           </div>
         </section>
@@ -148,166 +148,122 @@
 
         <div class="portfolio-grid" id="portfolioGrid">
 
-          <!-- ITEM 1: Replace VIDEO_ID_HERE with your actual YouTube video ID -->
-          <div class="portfolio-item window" data-category="mixing">
+          <!-- Working For Nothing -->
+          <div class="portfolio-item window" data-category="mix-master">
             <div class="window-titlebar">
               <span class="titlebar-icon" aria-hidden="true">🎚️</span>
-              <span class="titlebar-title">Mix Project — Track Title</span>
+              <span class="titlebar-title">Working For Nothing</span>
             </div>
             <div class="video-container">
-              <!-- Replace VIDEO_ID_HERE below with your actual YouTube video ID -->
-              <div class="portfolio-placeholder" aria-label="Video placeholder — add your YouTube video ID">
-                <span style="font-size:32px">▶</span>
-                <strong>Mixing Demo</strong>
-                <span style="opacity:.7">Replace VIDEO_ID_HERE in portfolio.html<br>with your actual YouTube video ID</span>
-              </div>
-              <!-- Uncomment and fill in the line below when you have a video ID:
               <iframe
-                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                title="Mix Project — Track Title"
+                src="https://www.youtube.com/embed/qLfkl8qIGMk"
+                title="Working For Nothing — Modular Toad Audio"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
                 loading="lazy">
               </iframe>
-              -->
             </div>
-            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
-              <strong>Service:</strong> Mixing &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk);color:var(--text-muted)">
+              <strong style="color:var(--toad-light)">Working For Nothing</strong> &nbsp;|&nbsp; <strong>Artist:</strong> Modular Toad Audio &nbsp;|&nbsp; Mix &amp; Master
             </div>
           </div>
 
-          <!-- ITEM 2 -->
-          <div class="portfolio-item window" data-category="mastering">
+          <!-- Days Almost Over -->
+          <div class="portfolio-item window" data-category="mix-master">
             <div class="window-titlebar">
-              <span class="titlebar-icon" aria-hidden="true">💿</span>
-              <span class="titlebar-title">Mastering Project — Track Title</span>
+              <span class="titlebar-icon" aria-hidden="true">🎚️</span>
+              <span class="titlebar-title">Days Almost Over</span>
             </div>
             <div class="video-container">
-              <div class="portfolio-placeholder" aria-label="Video placeholder">
-                <span style="font-size:32px">▶</span>
-                <strong>Mastering Demo</strong>
-                <span style="opacity:.7">Add your YouTube video ID here</span>
-              </div>
-              <!--
               <iframe
-                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                title="Mastering Project — Track Title"
+                src="https://www.youtube.com/embed/zj0UUI3AOxw"
+                title="Days Almost Over — Modular Toad Audio"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
                 loading="lazy">
               </iframe>
-              -->
             </div>
-            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
-              <strong>Service:</strong> Mastering &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk);color:var(--text-muted)">
+              <strong style="color:var(--toad-light)">Days Almost Over</strong> &nbsp;|&nbsp; <strong>Artist:</strong> Modular Toad Audio &nbsp;|&nbsp; Mix &amp; Master
             </div>
           </div>
 
-          <!-- ITEM 3 -->
+          <!-- Glass Cannon -->
+          <div class="portfolio-item window" data-category="mix-master">
+            <div class="window-titlebar">
+              <span class="titlebar-icon" aria-hidden="true">🎚️</span>
+              <span class="titlebar-title">Glass Cannon</span>
+            </div>
+            <div class="video-container">
+              <iframe
+                src="https://www.youtube.com/embed/mvyqMlsZW3g"
+                title="Glass Cannon — Modular Toad Audio"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+            </div>
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk);color:var(--text-muted)">
+              <strong style="color:var(--toad-light)">Glass Cannon</strong> &nbsp;|&nbsp; <strong>Artist:</strong> Modular Toad Audio &nbsp;|&nbsp; Mix &amp; Master
+            </div>
+          </div>
+
+          <!-- All I Got -->
+          <div class="portfolio-item window" data-category="mix-master">
+            <div class="window-titlebar">
+              <span class="titlebar-icon" aria-hidden="true">🎚️</span>
+              <span class="titlebar-title">All I Got</span>
+            </div>
+            <div class="video-container">
+              <iframe
+                src="https://www.youtube.com/embed/OsgriFlOd2g"
+                title="All I Got — Modular Toad Audio"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+            </div>
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk);color:var(--text-muted)">
+              <strong style="color:var(--toad-light)">All I Got</strong> &nbsp;|&nbsp; <strong>Artist:</strong> Modular Toad Audio &nbsp;|&nbsp; Mix &amp; Master
+            </div>
+          </div>
+
+          <!-- Spaced -->
+          <div class="portfolio-item window" data-category="mix-master">
+            <div class="window-titlebar">
+              <span class="titlebar-icon" aria-hidden="true">🎚️</span>
+              <span class="titlebar-title">Spaced</span>
+            </div>
+            <div class="video-container">
+              <iframe
+                src="https://www.youtube.com/embed/vaxtt0bMB8I"
+                title="Spaced — Modular Toad Audio"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+            </div>
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk);color:var(--text-muted)">
+              <strong style="color:var(--toad-light)">Spaced</strong> &nbsp;|&nbsp; <strong>Artist:</strong> Modular Toad Audio &nbsp;|&nbsp; Mix &amp; Master
+            </div>
+          </div>
+
+          <!-- Podcast placeholder with "Be the first" -->
           <div class="portfolio-item window" data-category="podcast">
             <div class="window-titlebar">
               <span class="titlebar-icon" aria-hidden="true">🎙️</span>
-              <span class="titlebar-title">Podcast Episode — Episode Title</span>
+              <span class="titlebar-title">Podcast Editing</span>
             </div>
             <div class="video-container">
-              <div class="portfolio-placeholder" aria-label="Video placeholder">
-                <span style="font-size:32px">▶</span>
-                <strong>Podcast Editing Demo</strong>
-                <span style="opacity:.7">Add your YouTube video ID here</span>
+              <div class="portfolio-placeholder" aria-label="Podcast — be the first client">
+                <span style="font-size:32px">🎙️</span>
+                <strong style="color:var(--amber-bright);font-family:'Press Start 2P',monospace;font-size:9px;line-height:1.8">BE THE FIRST</strong>
+                <span style="opacity:.8;font-size:11px;line-height:1.6;max-width:200px;text-align:center">Podcast editing slots are open — be our first podcast client and set the standard!</span>
+                <a class="btn btn-primary" href="contact.html" style="margin-top:8px;font-size:10px">📋 Get in Touch</a>
               </div>
-              <!--
-              <iframe
-                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                title="Podcast Episode — Episode Title"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                loading="lazy">
-              </iframe>
-              -->
             </div>
-            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
-              <strong>Service:</strong> Podcast Editing &nbsp;|&nbsp; <strong>Type:</strong> Add type here
-            </div>
-          </div>
-
-          <!-- ITEM 4 -->
-          <div class="portfolio-item window" data-category="mixing">
-            <div class="window-titlebar">
-              <span class="titlebar-icon" aria-hidden="true">🎚️</span>
-              <span class="titlebar-title">Mix Project — Track Title</span>
-            </div>
-            <div class="video-container">
-              <div class="portfolio-placeholder" aria-label="Video placeholder">
-                <span style="font-size:32px">▶</span>
-                <strong>Mixing Demo</strong>
-                <span style="opacity:.7">Add your YouTube video ID here</span>
-              </div>
-              <!--
-              <iframe
-                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                title="Mix Project — Track Title"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                loading="lazy">
-              </iframe>
-              -->
-            </div>
-            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
-              <strong>Service:</strong> Mixing &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
-            </div>
-          </div>
-
-          <!-- ITEM 5 -->
-          <div class="portfolio-item window" data-category="mastering">
-            <div class="window-titlebar">
-              <span class="titlebar-icon" aria-hidden="true">💿</span>
-              <span class="titlebar-title">Mastering Project — Track Title</span>
-            </div>
-            <div class="video-container">
-              <div class="portfolio-placeholder" aria-label="Video placeholder">
-                <span style="font-size:32px">▶</span>
-                <strong>Mastering Demo</strong>
-                <span style="opacity:.7">Add your YouTube video ID here</span>
-              </div>
-              <!--
-              <iframe
-                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                title="Mastering Project — Track Title"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                loading="lazy">
-              </iframe>
-              -->
-            </div>
-            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
-              <strong>Service:</strong> Mastering &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
-            </div>
-          </div>
-
-          <!-- ITEM 6 -->
-          <div class="portfolio-item window" data-category="mixing">
-            <div class="window-titlebar">
-              <span class="titlebar-icon" aria-hidden="true">🎚️</span>
-              <span class="titlebar-title">Mix Project — Track Title</span>
-            </div>
-            <div class="video-container">
-              <div class="portfolio-placeholder" aria-label="Video placeholder">
-                <span style="font-size:32px">▶</span>
-                <strong>Mixing Demo</strong>
-                <span style="opacity:.7">Add your YouTube video ID here</span>
-              </div>
-              <!--
-              <iframe
-                src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-                title="Mix Project — Track Title"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                loading="lazy">
-              </iframe>
-              -->
-            </div>
-            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk)">
-              <strong>Service:</strong> Mixing &nbsp;|&nbsp; <strong>Genre:</strong> Add genre here
+            <div style="padding:8px 10px;background:var(--gray-light);font-size:11px;border-top:1px solid var(--bdr-dk);color:var(--text-muted)">
+              <strong>Service:</strong> Podcast Editing &nbsp;|&nbsp; New clients welcome
             </div>
           </div>
 
@@ -333,7 +289,7 @@
 
       <div class="status-bar" aria-hidden="true">
         <span class="status-item">🎬 Portfolio</span>
-        <span class="status-item">6 Projects</span>
+        <span class="status-item">5 Tracks + Podcast</span>
       </div>
 
     </div><!-- /.main-window -->
