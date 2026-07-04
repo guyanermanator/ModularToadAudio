@@ -431,12 +431,12 @@ function initStartMenu() {
     col.appendChild(header);
 
     const pages = [
-      { icon: 'HM', label: 'Home',      href: 'index.html'    },
-      { icon: 'SV', label: 'Services',  href: 'services.html' },
-      { icon: 'PF', label: 'Portfolio', href: 'portfolio.html' },
-      { icon: 'PR', label: 'Pricing',   href: 'pricing.html'  },
-      { icon: 'AB', label: 'About',     href: 'about.html'    },
-      { icon: 'CT', label: 'Contact',   href: 'contact.html'  },
+      { icon: '⌂',  label: 'Home',      href: 'index.html'    },
+      { icon: '♬',  label: 'Services',  href: 'services.html' },
+      { icon: '▶',  label: 'Portfolio', href: 'portfolio.html' },
+      { icon: '$',  label: 'Pricing',   href: 'pricing.html'  },
+      { icon: '◉',  label: 'About',     href: 'about.html'    },
+      { icon: '✉',  label: 'Contact',   href: 'contact.html'  },
     ];
 
     pages.forEach(page => {
@@ -533,11 +533,55 @@ function initContactForm() {
     });
   }
 
-  form.addEventListener('submit', () => {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
     const btn = form.querySelector('button[type="submit"]');
+    const errorEl = form.querySelector('.form-error-msg');
+    if (errorEl) errorEl.remove();
+
     if (btn) {
       btn.textContent = 'Sending…';
-      btn.disabled    = true;
+      btn.disabled = true;
+    }
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        // Replace form content with success message
+        const successDiv = document.createElement('div');
+        successDiv.className = 'form-success';
+        successDiv.innerHTML =
+          '<span class="form-success-icon" aria-hidden="true">✔</span>' +
+          '<div><strong>Message sent successfully!</strong>' +
+          'Thanks for reaching out — we\'ll get back to you within 24 hours. ' +
+          'Keep an eye on your inbox (and spam folder just in case).</div>';
+        form.replaceWith(successDiv);
+      } else {
+        let errMsg = 'Something went wrong. Please try again or email us directly.';
+        try {
+          const data = await response.json();
+          if (data && data.errors) {
+            errMsg = data.errors.map(err => err.message).join(', ');
+          }
+        } catch (_) { /* ignore parse errors */ }
+        throw new Error(errMsg);
+      }
+    } catch (err) {
+      if (btn) {
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+      }
+      const msg = document.createElement('p');
+      msg.className = 'form-error-msg';
+      msg.textContent = err.message || 'Unable to send. Please email us directly at ModularToadAudio@protonmail.com';
+      form.appendChild(msg);
     }
   });
 }
