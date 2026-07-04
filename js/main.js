@@ -5,6 +5,78 @@
    desktop icons, hero water shader, mascot poke, carousel
    ============================================================ */
 
+const SITE_ASSETS = Object.freeze({
+  mascot: 'https://github.com/user-attachments/assets/f5f6a705-f9b0-45e3-a699-155d5fb7a356',
+  services: 'https://github.com/user-attachments/assets/fc75a11e-e401-4075-9fa7-6c75d9ced063',
+  portfolio: 'https://github.com/user-attachments/assets/51335a06-fa62-44de-8334-6a6d1904754d',
+  pricing: 'https://github.com/user-attachments/assets/6c6dbbe4-3e73-47cd-89cd-5b21461e3ec4',
+  about: 'https://github.com/user-attachments/assets/9cecc67b-86c3-4e4c-b1fa-eb52eb978cdf',
+  contact: 'https://github.com/user-attachments/assets/8c6fc813-1bd5-47e6-87df-9e3003a44dbb',
+});
+
+const PAGE_META = Object.freeze({
+  'index.html':     { key: 'home',      label: 'Home',      icon: SITE_ASSETS.mascot     },
+  'services.html':  { key: 'services',  label: 'Services',  icon: SITE_ASSETS.services   },
+  'portfolio.html': { key: 'portfolio', label: 'Portfolio', icon: SITE_ASSETS.portfolio  },
+  'pricing.html':   { key: 'pricing',   label: 'Pricing',   icon: SITE_ASSETS.pricing    },
+  'about.html':     { key: 'about',     label: 'About',     icon: SITE_ASSETS.about      },
+  'contact.html':   { key: 'contact',   label: 'Contact',   icon: SITE_ASSETS.contact    },
+});
+
+function normalisePageHref(href = '') {
+  const clean = href.split('#')[0].split('?')[0];
+  return clean || 'index.html';
+}
+
+function getPageMeta(href = '') {
+  return PAGE_META[normalisePageHref(href)] || PAGE_META['index.html'];
+}
+
+function createIconImage(url, className) {
+  const img = document.createElement('img');
+  img.src = url;
+  img.alt = '';
+  img.className = className;
+  img.decoding = 'async';
+  img.loading = 'lazy';
+  return img;
+}
+
+function decorateIconChip(node, url, imageClass) {
+  if (!node || node.dataset.iconApplied === 'true') return;
+  node.textContent = '';
+  node.appendChild(createIconImage(url, imageClass));
+  node.dataset.iconApplied = 'true';
+}
+
+function initSharedBranding() {
+  document.querySelectorAll('link[rel~="icon"]').forEach((link) => {
+    link.setAttribute('href', SITE_ASSETS.mascot);
+  });
+
+  document.querySelectorAll('.brand-logo, .start-logo, .hero-mascot-img, .about-mascot-img').forEach((img) => {
+    img.src = SITE_ASSETS.mascot;
+  });
+
+  document.querySelectorAll('.nav-item').forEach((item) => {
+    if (item.querySelector('.nav-item-icon')) return;
+    const meta = getPageMeta(item.getAttribute('href'));
+    const iconWrap = document.createElement('span');
+    iconWrap.className = 'nav-item-icon';
+    iconWrap.setAttribute('aria-hidden', 'true');
+    iconWrap.appendChild(createIconImage(meta.icon, 'nav-item-icon-image'));
+    item.prepend(iconWrap);
+  });
+
+  const titlebarIcon = document.querySelector('.main-window > .window-titlebar .titlebar-icon');
+  if (titlebarIcon) {
+    const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+    const meta = getPageMeta(currentFile);
+    decorateIconChip(titlebarIcon, meta.icon, 'titlebar-icon-image');
+    titlebarIcon.classList.add('titlebar-icon-thumb');
+  }
+}
+
 /* ── CLOCK ──────────────────────────────────────────────────── */
 function updateClock() {
   const el = document.getElementById('clock');
@@ -243,7 +315,13 @@ function initDesktopIcons() {
   const currentFile = window.location.pathname.split('/').pop() || 'index.html';
 
   icons.forEach(icon => {
-    const href = icon.getAttribute('href') || '';
+    const href = normalisePageHref(icon.getAttribute('href') || '');
+    const meta = getPageMeta(href);
+    const chip = icon.querySelector('.desktop-icon-emoji');
+    if (chip) {
+      chip.classList.add('desktop-icon-thumb');
+      decorateIconChip(chip, meta.icon, 'desktop-icon-image');
+    }
     if (href === currentFile || (currentFile === '' && href === 'index.html')) {
       icon.classList.add('icon-active');
     }
@@ -275,7 +353,7 @@ function initNavigation() {
   const currentFile = window.location.pathname.split('/').pop() || 'index.html';
 
   document.querySelectorAll('.nav-item').forEach(item => {
-    const href = item.getAttribute('href') || '';
+    const href = normalisePageHref(item.getAttribute('href') || '');
     const match = href === currentFile || (currentFile === '' && href === 'index.html');
     item.classList.toggle('active', match);
   });
@@ -425,18 +503,18 @@ function initStartMenu() {
       gap:          '8px',
       borderBottom: '1px solid #000060',
     });
-    header.innerHTML = '<img src="https://f4.bcbits.com/img/0038520380_10.jpg" alt="" style="width:20px;height:20px;object-fit:cover;border-radius:2px">'
+    header.innerHTML = `<img src="${SITE_ASSETS.mascot}" alt="" style="width:22px;height:22px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,.35)">`
       + '<span style="font-size:13px;font-weight:bold;line-height:1.3">Modular Toad<br>'
       + '<small style="font-size:10px;opacity:.8;font-weight:normal">Audio</small></span>';
     col.appendChild(header);
 
     const pages = [
-      { icon: '⌂',  label: 'Home',      href: 'index.html'    },
-      { icon: '♬',  label: 'Services',  href: 'services.html' },
-      { icon: '▶',  label: 'Portfolio', href: 'portfolio.html' },
-      { icon: '$',  label: 'Pricing',   href: 'pricing.html'  },
-      { icon: '◉',  label: 'About',     href: 'about.html'    },
-      { icon: '✉',  label: 'Contact',   href: 'contact.html'  },
+      { icon: SITE_ASSETS.mascot,    label: 'Home',      href: 'index.html'     },
+      { icon: SITE_ASSETS.services,  label: 'Services',  href: 'services.html'  },
+      { icon: SITE_ASSETS.portfolio, label: 'Portfolio', href: 'portfolio.html' },
+      { icon: SITE_ASSETS.pricing,   label: 'Pricing',   href: 'pricing.html'   },
+      { icon: SITE_ASSETS.about,     label: 'About',     href: 'about.html'     },
+      { icon: SITE_ASSETS.contact,   label: 'Contact',   href: 'contact.html'   },
     ];
 
     pages.forEach(page => {
@@ -453,7 +531,7 @@ function initStartMenu() {
         borderBottom:   '1px solid #253025',
         transition:     'background .05s, color .05s',
       });
-      link.innerHTML = `<span style="font-size:15px">${page.icon}</span>${page.label}`;
+      link.innerHTML = `<span style="width:18px;height:18px;border-radius:5px;overflow:hidden;display:inline-flex;box-shadow:0 0 0 1px rgba(255,255,255,.16)"><img src="${page.icon}" alt="" style="width:100%;height:100%;object-fit:cover"></span>${page.label}`;
       link.addEventListener('mouseenter', () => {
         link.style.background = '#000080';
         link.style.color      = '#fff';
@@ -626,10 +704,32 @@ function initBootSequence() {
 
 /* ── HOMEPAGE PORTFOLIO CAROUSEL ───────────────────────────── */
 async function initPortfolioPreviewCarousel() {
+  const carousel = document.getElementById('portfolioPreviewCarousel');
   const track = document.getElementById('portfolioPreviewTrack');
   const prev  = document.getElementById('portfolioPrev');
   const next  = document.getElementById('portfolioNext');
-  if (!track || !prev || !next) return;
+  if (!carousel || !track || !prev || !next) return;
+
+  const status = document.createElement('p');
+  status.id = 'portfolioPreviewStatus';
+  status.className = 'portfolio-preview-status';
+  status.setAttribute('aria-live', 'polite');
+  carousel.appendChild(status);
+
+  const prettyCategory = (category = '') => {
+    const map = {
+      all: 'All',
+      podcast: 'Podcast',
+      'mix-master': 'Mix & Master',
+      submission: 'Submission',
+    };
+    return map[category] || category.replace(/-/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+  };
+
+  const getVideoId = (src = '') => {
+    const match = src.match(/embed\/([^?&/]+)/);
+    return match ? match[1] : '';
+  };
 
   try {
     const res = await fetch('portfolio.html', { cache: 'no-store' });
@@ -643,47 +743,168 @@ async function initPortfolioPreviewCarousel() {
       const category = card.dataset.category || 'submission';
       const iframe = card.querySelector('iframe');
       const src = iframe?.getAttribute('src') || '';
-      return { title, category, src };
+      const videoId = getVideoId(src);
+      const summary = card.querySelector('div[style*="font-size:11px"]')?.textContent?.replace(/\s+/g, ' ').trim()
+        || `${prettyCategory(category)} showcase`;
+      const cover = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
+      return { title, category, src, videoId, summary, cover };
     }).filter(item => item.title);
 
     if (!items.length) {
       track.innerHTML = '<p class="portfolio-preview-empty">Portfolio submissions will appear here automatically.</p>';
+      status.textContent = 'Portfolio preview unavailable.';
       prev.disabled = true;
       next.disabled = true;
       return;
     }
 
-    let index = 0;
-    const render = () => {
-      const item = items[index];
-      const media = item.src
-        ? `<div class="video-container"><iframe src="${item.src}" title="${item.title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`
-        : '<div class="portfolio-preview-empty">Media preview unavailable for this submission.</div>';
-
-      track.innerHTML = `
-        <article class="portfolio-preview-card window">
-          <div class="window-titlebar">
-            <span class="titlebar-icon">PF</span>
-            <span class="titlebar-title">${item.title}</span>
+    track.innerHTML = items.map((item, idx) => `
+      <article class="portfolio-preview-slide window${idx === 0 ? ' is-active' : ''}" data-index="${idx}" tabindex="0" role="group" aria-label="${item.title} — ${prettyCategory(item.category)}">
+        <div class="portfolio-preview-cover"${item.cover ? ` style="background-image:linear-gradient(180deg, rgba(5, 9, 19, 0.08), rgba(5, 9, 19, 0.92)), url('${item.cover}')"` : ''}>
+          <span class="portfolio-preview-chip">${prettyCategory(item.category)}</span>
+          <span class="portfolio-preview-count">${String(idx + 1).padStart(2, '0')}</span>
+        </div>
+        <div class="portfolio-preview-body">
+          <h3 class="portfolio-preview-title">${item.title}</h3>
+          <p class="portfolio-preview-summary">${item.summary}</p>
+          <div class="portfolio-preview-actions">
+            <a class="btn btn-secondary portfolio-preview-link" href="portfolio.html">Open in Portfolio</a>
+            ${item.videoId ? `<a class="btn btn-primary portfolio-preview-link" href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>` : ''}
           </div>
-          ${media}
-          <div class="portfolio-preview-meta">Category: ${item.category}</div>
-        </article>`;
+        </div>
+      </article>
+    `).join('');
+
+    const slides = Array.from(track.querySelectorAll('.portfolio-preview-slide'));
+    let currentIndex = 0;
+    let pointerDown = false;
+    let dragging = false;
+    let dragMoved = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let scrollTimer = null;
+
+    const updateButtons = () => {
+      const disabled = slides.length <= 1;
+      prev.disabled = disabled;
+      next.disabled = disabled;
+      status.textContent = `${currentIndex + 1} / ${slides.length} — ${items[currentIndex].title}`;
     };
 
-    prev.addEventListener('click', () => {
-      index = (index - 1 + items.length) % items.length;
-      render();
+    const setActive = (index, { scroll = true } = {}) => {
+      currentIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle('is-active', slideIndex === currentIndex);
+      });
+      if (scroll) {
+        slides[currentIndex].scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center',
+        });
+      }
+      updateButtons();
+    };
+
+    const findClosestSlide = () => {
+      const bounds = track.getBoundingClientRect();
+      const center = bounds.left + bounds.width / 2;
+      let nearestIndex = 0;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+
+      slides.forEach((slide, slideIndex) => {
+        const rect = slide.getBoundingClientRect();
+        const slideCenter = rect.left + rect.width / 2;
+        const distance = Math.abs(slideCenter - center);
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestIndex = slideIndex;
+        }
+      });
+
+      return nearestIndex;
+    };
+
+    prev.addEventListener('click', () => setActive(currentIndex - 1));
+    next.addEventListener('click', () => setActive(currentIndex + 1));
+
+    slides.forEach((slide, slideIndex) => {
+      slide.addEventListener('click', (event) => {
+        if (dragMoved) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+        if (!event.target.closest('a')) setActive(slideIndex);
+      });
+
+      slide.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          setActive(slideIndex);
+        }
+      });
     });
 
-    next.addEventListener('click', () => {
-      index = (index + 1) % items.length;
-      render();
+    track.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(() => {
+        setActive(findClosestSlide(), { scroll: false });
+      }, 90);
+    }, { passive: true });
+
+    track.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0) return;
+      pointerDown = true;
+      dragging = false;
+      dragMoved = false;
+      startX = event.clientX;
+      startScrollLeft = track.scrollLeft;
+      track.classList.add('is-pointer-down');
+      track.setPointerCapture(event.pointerId);
     });
 
-    render();
+    track.addEventListener('pointermove', (event) => {
+      if (!pointerDown) return;
+      const delta = event.clientX - startX;
+      if (!dragging && Math.abs(delta) > 8) {
+        dragging = true;
+        dragMoved = true;
+        track.classList.add('dragging');
+      }
+      if (!dragging) return;
+      event.preventDefault();
+      track.scrollLeft = startScrollLeft - delta;
+    });
+
+    const stopDragging = (event) => {
+      if (!pointerDown) return;
+      pointerDown = false;
+      track.classList.remove('is-pointer-down', 'dragging');
+      if (event && track.hasPointerCapture(event.pointerId)) {
+        track.releasePointerCapture(event.pointerId);
+      }
+      if (dragging) {
+        dragging = false;
+        setActive(findClosestSlide());
+        window.setTimeout(() => { dragMoved = false; }, 80);
+        return;
+      }
+      dragMoved = false;
+    };
+
+    track.addEventListener('pointerup', stopDragging);
+    track.addEventListener('pointercancel', stopDragging);
+    track.addEventListener('lostpointercapture', () => {
+      pointerDown = false;
+      dragging = false;
+      track.classList.remove('is-pointer-down', 'dragging');
+    });
+
+    setActive(0, { scroll: false });
   } catch (_) {
     track.innerHTML = '<p class="portfolio-preview-empty">Portfolio preview is temporarily unavailable.</p>';
+    status.textContent = 'Portfolio preview unavailable.';
     prev.disabled = true;
     next.disabled = true;
   }
@@ -694,6 +915,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateClock();
   setInterval(updateClock, 1000);
 
+  initSharedBranding();
   initPS2Background();
   initHeroWaterShader();
   initMascotPoke();
