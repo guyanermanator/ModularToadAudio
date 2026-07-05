@@ -10,7 +10,7 @@ A Windows 98 / pixel-art-inspired static website for the ModularToadAudio audio 
 
 | File | Page |
 |---|---|
-| `index.html` | Home — hero, services overview, portfolio preview, testimonials |
+| `index.html` | Home — hero, services overview, portfolio preview |
 | `services.html` | Services — mixing, mastering, podcast editing, loudness, stems |
 | `portfolio.html` | Portfolio — embedded YouTube videos |
 | `pricing.html` | Pricing — $120 standard / $60 new-customer discount |

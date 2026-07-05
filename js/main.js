@@ -6,16 +6,17 @@
    ============================================================ */
 
 const SITE_ASSETS = Object.freeze({
-  mascot:    'images/mascot.gif',
+  mascot:    'images/ModularToadAudio.jpg',
+  home:      'images/home.png',
   services:  'images/services.png',
-  portfolio: 'images/portfolio.png',
-  pricing:   'images/pricing.png',
+  portfolio: 'images/portfoilo.svg',
+  pricing:   'images/priceing.png',
   about:     'images/about.png',
   contact:   'images/contact.png',
 });
 
 const PAGE_META = Object.freeze({
-  'index.html':     { key: 'home',      label: 'Home',      icon: SITE_ASSETS.mascot     },
+  'index.html':     { key: 'home',      label: 'Home',      icon: SITE_ASSETS.home       },
   'services.html':  { key: 'services',  label: 'Services',  icon: SITE_ASSETS.services   },
   'portfolio.html': { key: 'portfolio', label: 'Portfolio', icon: SITE_ASSETS.portfolio  },
   'pricing.html':   { key: 'pricing',   label: 'Pricing',   icon: SITE_ASSETS.pricing    },
@@ -459,7 +460,7 @@ function initStartMenu() {
       borderColor:'#3a5040 #070c08 #070c08 #3a5040',
       boxShadow:  '3px 3px 0 #040604',
       zIndex:     '9999',
-      minWidth:   '220px',
+      minWidth:   '248px',
       fontFamily: '"MS Sans Serif", Arial, sans-serif',
       fontSize:   '12px',
       animation:  'windowOpen .1s ease-out',
@@ -469,21 +470,22 @@ function initStartMenu() {
     const sidebar = document.createElement('div');
     Object.assign(sidebar.style, {
       background: 'linear-gradient(to top, #000080 0%, #1084d0 100%)',
-      width:      '22px',
+      width:      '30px',
       display:    'flex',
-      alignItems: 'flex-end',
+      alignItems: 'center',
       justifyContent: 'center',
-      padding:    '6px 0',
+      padding:    '10px 0',
       flexShrink: '0',
     });
     const sideText = document.createElement('span');
     Object.assign(sideText.style, {
       color:       'rgba(255,255,255,.25)',
-      fontSize:    '11px',
+      fontSize:    '10px',
       fontWeight:  'bold',
       writingMode: 'vertical-rl',
       transform:   'rotate(180deg)',
-      letterSpacing: '1px',
+      letterSpacing: '1.6px',
+      lineHeight:  '1.2',
       userSelect:  'none',
       fontFamily:  '"MS Sans Serif", Arial, sans-serif',
     });
@@ -498,19 +500,19 @@ function initStartMenu() {
     Object.assign(header.style, {
       background:   'linear-gradient(to bottom, #000080, #1084d0)',
       color:        '#fff',
-      padding:      '10px 12px',
+      padding:      '12px 14px',
       display:      'flex',
       alignItems:   'center',
-      gap:          '8px',
+      gap:          '10px',
       borderBottom: '1px solid #000060',
     });
-    header.innerHTML = `<img src="${SITE_ASSETS.mascot}" alt="" style="width:22px;height:22px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,.35)">`
+    header.innerHTML = `<img src="${SITE_ASSETS.mascot}" alt="" style="width:24px;height:24px;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,.35)">`
       + '<span style="font-size:13px;font-weight:bold;line-height:1.3">Modular Toad<br>'
       + '<small style="font-size:10px;opacity:.8;font-weight:normal">Audio</small></span>';
     col.appendChild(header);
 
     const pages = [
-      { icon: SITE_ASSETS.mascot,    label: 'Home',      href: 'index.html'     },
+      { icon: SITE_ASSETS.home,      label: 'Home',      href: 'index.html'     },
       { icon: SITE_ASSETS.services,  label: 'Services',  href: 'services.html'  },
       { icon: SITE_ASSETS.portfolio, label: 'Portfolio', href: 'portfolio.html' },
       { icon: SITE_ASSETS.pricing,   label: 'Pricing',   href: 'pricing.html'   },
@@ -525,8 +527,8 @@ function initStartMenu() {
       Object.assign(link.style, {
         display:        'flex',
         alignItems:     'center',
-        gap:            '10px',
-        padding:        '8px 14px',
+        gap:            '12px',
+        padding:        '10px 16px',
         color:          '#b8d4bc',
         textDecoration: 'none',
         borderBottom:   '1px solid #253025',
