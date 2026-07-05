@@ -773,7 +773,8 @@ async function initPortfolioPreviewCarousel() {
       const summary = card.querySelector('div[style*="font-size:11px"]')?.textContent?.replace(/\s+/g, ' ').trim()
         || `${prettyCategory(category)} showcase`;
       const cover = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
-      return { title, category, src, videoId, summary, cover };
+      const destination = videoId ? `https://www.youtube.com/watch?v=${videoId}` : 'portfolio.html';
+      return { title, category, src, videoId, summary, cover, destination };
     }).filter(item => item.title);
 
     if (!items.length) {
@@ -785,7 +786,7 @@ async function initPortfolioPreviewCarousel() {
     }
 
     track.innerHTML = items.map((item, idx) => `
-      <article class="portfolio-preview-slide window${idx === 0 ? ' is-active' : ''}" data-index="${idx}" tabindex="0" role="group" aria-label="${item.title} — ${prettyCategory(item.category)}">
+      <article class="portfolio-preview-slide window${idx === 0 ? ' is-active' : ''}" data-index="${idx}" data-target="${item.destination}" data-external="${item.videoId ? 'true' : 'false'}" tabindex="0" role="link" aria-label="${item.title} — ${prettyCategory(item.category)}">
         <div class="portfolio-preview-cover"${item.cover ? ` style="background-image:linear-gradient(180deg, rgba(5, 9, 19, 0.08), rgba(5, 9, 19, 0.92)), url('${item.cover}')"` : ''}>
           <span class="portfolio-preview-chip">${prettyCategory(item.category)}</span>
           <span class="portfolio-preview-count">${String(idx + 1).padStart(2, '0')}</span>
@@ -814,7 +815,7 @@ async function initPortfolioPreviewCarousel() {
       const disabled = slides.length <= 1;
       prev.disabled = disabled;
       next.disabled = disabled;
-      status.textContent = `${currentIndex + 1} / ${slides.length} — ${items[currentIndex].title}`;
+      status.textContent = `${currentIndex + 1} / ${slides.length} — ${items[currentIndex].title} — click active card to open`;
     };
 
     const setActive = (index, { scroll = true } = {}) => {
@@ -830,6 +831,20 @@ async function initPortfolioPreviewCarousel() {
         });
       }
       updateButtons();
+    };
+
+    const openSlide = (slideIndex) => {
+      const slide = slides[slideIndex];
+      if (!slide) return;
+      const target = slide.dataset.target;
+      if (!target) return;
+
+      if (slide.dataset.external === 'true') {
+        window.open(target, '_blank', 'noopener,noreferrer');
+        return;
+      }
+
+      window.location.href = target;
     };
 
     const findClosestSlide = () => {
@@ -861,12 +876,21 @@ async function initPortfolioPreviewCarousel() {
           event.stopPropagation();
           return;
         }
-        if (!event.target.closest('a')) setActive(slideIndex);
+        if (event.target.closest('a')) return;
+        if (slideIndex === currentIndex) {
+          openSlide(slideIndex);
+          return;
+        }
+        setActive(slideIndex);
       });
 
       slide.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
+          if (slideIndex === currentIndex) {
+            openSlide(slideIndex);
+            return;
+          }
           setActive(slideIndex);
         }
       });
@@ -894,7 +918,7 @@ async function initPortfolioPreviewCarousel() {
     track.addEventListener('pointermove', (event) => {
       if (!pointerDown) return;
       const delta = event.clientX - startX;
-      if (!dragging && Math.abs(delta) > 3) {
+      if (!dragging && Math.abs(delta) > 6) {
         dragging = true;
         dragMoved = true;
         track.classList.add('dragging');
@@ -914,12 +938,9 @@ async function initPortfolioPreviewCarousel() {
       if (dragging) {
         dragging = false;
         setActive(findClosestSlide());
-        window.requestAnimationFrame(() => { dragMoved = false; });
+        window.setTimeout(() => { dragMoved = false; }, 0);
         return;
       }
-      const bounds = track.getBoundingClientRect();
-      const isLeftHalf = event.clientX < (bounds.left + bounds.width / 2);
-      setActive(isLeftHalf ? currentIndex - 1 : currentIndex + 1);
       dragMoved = false;
     };
 
@@ -928,6 +949,7 @@ async function initPortfolioPreviewCarousel() {
     track.addEventListener('lostpointercapture', () => {
       pointerDown = false;
       dragging = false;
+      dragMoved = false;
       track.classList.remove('is-pointer-down', 'dragging');
     });
 
