@@ -168,14 +168,14 @@ img, svg { display: block; max-width: 100%; }
 /* ── DESKTOP ICONS (Win98 fixed-left shortcuts) ──────────────── */
 .desktop-icons {
   position: sticky;
-  top: 14px;
+  top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  width: var(--sidebar-w);
-  min-width: var(--sidebar-w);
-  max-height: calc(100vh - 28px);
-  padding: 10px 6px;
+  gap: 6px;
+  width: 96px;
+  min-width: 96px;
+  max-height: calc(100dvh - 20px);
+  padding: 8px 5px 12px;
   z-index: 550;
   overflow-y: auto;
   scrollbar-width: none;
@@ -190,8 +190,8 @@ img, svg { display: block; max-width: 100%; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 8px 6px;
+  gap: 6px;
+  padding: 6px 5px;
   cursor: pointer;
   width: 100%;
   text-align: center;
@@ -222,8 +222,8 @@ img, svg { display: block; max-width: 100%; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 56px;
-  height: 56px;
+  min-width: 48px;
+  height: 48px;
   padding: 3px;
   border: 1px solid #8ad8ff;
   background: linear-gradient(140deg, #11245e, #1f4ba9);
@@ -236,14 +236,14 @@ img, svg { display: block; max-width: 100%; }
 }
 .desktop-icon-label {
   font-family: var(--font-heavy);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
   text-shadow: 1px 1px 0 #000, -1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000;
-  line-height: 1.35;
+  line-height: 1.2;
   word-break: break-word;
-  max-width: 80px;
+  max-width: 72px;
 }
 .desktop-icon-image {
   width: 100%;
@@ -1561,51 +1561,36 @@ cite {
     linear-gradient(135deg, rgba(7, 13, 32, 0.96), rgba(26, 39, 80, 0.98));
 }
 .portfolio-preview-track {
-  min-height: 360px;
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(250px, 34vw);
-  gap: 18px;
-  overflow-x: auto;
-  padding: 4px 4px 14px;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  scroll-behavior: smooth;
-  touch-action: pan-y pinch-zoom;
-  overscroll-behavior-x: contain;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-overflow-scrolling: touch;
-}
-.portfolio-preview-track.dragging {
-  scroll-snap-type: none;
-}
-.portfolio-preview-track.dragging * {
-  pointer-events: none;
-}
-.portfolio-preview-track::-webkit-scrollbar { display: none; }
-.portfolio-preview-track.dragging,
-.portfolio-preview-track.is-pointer-down {
-  cursor: grabbing;
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+ gap: 18px;
+ min-height: 0;
+ padding: 4px 4px 8px;
 }
 .portfolio-preview-slide {
-  overflow: hidden;
-  min-height: 340px;
-  scroll-snap-align: center;
-  opacity: .62;
-  transform: translateY(10px) scale(.95);
-  transition: transform .24s ease, opacity .24s ease, box-shadow .24s ease, border-color .24s ease;
-  cursor: pointer;
+ display: block;
+ overflow: hidden;
+ min-height: 100%;
+ text-decoration: none;
+ color: inherit;
+ transform: translateY(0);
+ transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+ cursor: pointer;
 }
-.portfolio-preview-slide.is-active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  border-color: rgba(110, 214, 255, 0.92) #0b1738 #0b1738 rgba(110, 214, 255, 0.92);
-  box-shadow: 0 24px 40px rgba(0, 0, 0, .28), 0 0 22px rgba(110, 214, 255, 0.2);
+.portfolio-preview-slide:hover,
+.portfolio-preview-slide:focus-visible {
+ text-decoration: none;
+ color: inherit;
+ transform: translateY(-4px);
+ border-color: rgba(110, 214, 255, 0.92) #0b1738 #0b1738 rgba(110, 214, 255, 0.92);
+ box-shadow: 0 18px 30px rgba(0, 0, 0, .24), 0 0 18px rgba(110, 214, 255, 0.18);
+}
+.portfolio-preview-slide:focus-visible {
+ outline: 2px solid var(--toad-light);
+ outline-offset: 2px;
 }
 .portfolio-preview-cover {
-  position: relative;
+ position: relative;
   min-height: 210px;
   padding: 16px;
   display: flex;
@@ -1641,6 +1626,9 @@ cite {
   text-shadow: 0 0 18px rgba(110,214,255,.45);
 }
 .portfolio-preview-body {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 210px);
   padding: 16px 16px 18px;
 }
 .portfolio-preview-title {
@@ -1651,7 +1639,7 @@ cite {
   margin-bottom: 8px;
 }
 .portfolio-preview-summary {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.7;
   color: var(--text-muted);
   margin-bottom: 14px;
@@ -1660,6 +1648,7 @@ cite {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-top: auto;
 }
 .portfolio-preview-link {
   min-width: 0;
@@ -1702,6 +1691,11 @@ cite {
   text-align: center;
   color: var(--text-muted);
   padding: 12px;
+}
+
+.portfolio-item:target {
+  border-color: rgba(110, 214, 255, 0.92) #0b1738 #0b1738 rgba(110, 214, 255, 0.92);
+  box-shadow: 0 0 0 2px rgba(110, 214, 255, 0.22), 0 16px 28px rgba(0, 0, 0, 0.24);
 }
 
 @media (min-width: 1024px) {
@@ -1754,20 +1748,15 @@ cite {
     font-size: clamp(16px, 1.65vw, 24px);
   }
 
-  .portfolio-preview-track {
-    grid-auto-columns: minmax(280px, 30vw);
-  }
+  .portfolio-preview-track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 768px) {
   .portfolio-preview-carousel { padding: 14px; }
-  .portfolio-preview-track {
-    grid-auto-columns: minmax(100%, 1fr);
-    min-height: 320px;
-  }
+  .portfolio-preview-track { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
-  .portfolio-preview-track { grid-auto-columns: minmax(100%, 1fr); }
+  .portfolio-preview-track { grid-template-columns: 1fr; }
   .portfolio-preview-actions { flex-direction: column; }
 }
