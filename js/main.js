@@ -390,6 +390,369 @@ function initNavigation() {
   }
 }
 
+/* ── BULL TOAD EXPLOSION EASTER EGG ─────────────────────────── */
+function triggerBullToadExplosion() {
+  if (document.getElementById('bullToadOverlay')) return;
+
+  // ── OVERLAY ──────────────────────────────────────────────────
+  const overlay = document.createElement('div');
+  overlay.id = 'bullToadOverlay';
+  Object.assign(overlay.style, {
+    position: 'fixed', inset: '0', zIndex: '999999',
+    background: 'transparent', overflow: 'hidden', pointerEvents: 'all',
+  });
+  document.body.appendChild(overlay);
+
+  // ── CAPTURE ALL VISIBLE ELEMENTS ─────────────────────────────
+  const allEls = Array.from(document.querySelectorAll('*')).filter(el => {
+    if (el === overlay || overlay.contains(el)) return false;
+    const r = el.getBoundingClientRect();
+    if (r.width < 4 || r.height < 4) return false;
+    const st = window.getComputedStyle(el);
+    if (st.visibility === 'hidden' || st.display === 'none' || parseFloat(st.opacity) < 0.05) return false;
+    return true;
+  });
+
+  // Hide all DOM elements
+  const savedStyles = allEls.map(el => ({
+    el,
+    visibility: el.style.visibility,
+    opacity: el.style.opacity,
+    transition: el.style.transition,
+  }));
+  allEls.forEach(el => { el.style.visibility = 'hidden'; });
+
+  // ── SHARD CANVAS ─────────────────────────────────────────────
+  const shardCanvas = document.createElement('canvas');
+  const W = window.innerWidth, H = window.innerHeight;
+  shardCanvas.width = W; shardCanvas.height = H;
+  Object.assign(shardCanvas.style, {
+    position: 'absolute', inset: '0', width: '100%', height: '100%', zIndex: '1',
+  });
+  overlay.appendChild(shardCanvas);
+  const shardCtx = shardCanvas.getContext('2d');
+
+  // ── GENERATE SHARDS FROM EACH ELEMENT ────────────────────────
+  const shards = [];
+  const CX = W / 2, CY = H / 2;
+
+  function getElementColor(el) {
+    const st = window.getComputedStyle(el);
+    const bg = st.backgroundColor;
+    if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') return bg;
+    const bc = st.borderColor;
+    if (bc && bc !== 'rgba(0, 0, 0, 0)') return bc;
+    return st.color || '#4488cc';
+  }
+
+  allEls.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.width < 4 || rect.height < 4) return;
+    const color = getElementColor(el);
+    const area = rect.width * rect.height;
+    const numShards = Math.max(2, Math.min(12, Math.round(area / 4000)));
+
+    for (let i = 0; i < numShards; i++) {
+      // Random triangle within element bounding box
+      const pts = Array.from({ length: 3 }, () => ({
+        x: rect.left + Math.random() * rect.width,
+        y: rect.top  + Math.random() * rect.height,
+      }));
+      const cx = (pts[0].x + pts[1].x + pts[2].x) / 3;
+      const cy = (pts[0].y + pts[1].y + pts[2].y) / 3;
+
+      // Velocity radiates outward from page centre + random spin
+      const dx = cx - CX, dy = cy - CY;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const speed = 4 + Math.random() * 14;
+      shards.push({
+        pts: pts.map(p => ({ x: p.x - cx, y: p.y - cy })),
+        cx, cy,
+        vx: (dx / dist) * speed + (Math.random() - 0.5) * 4,
+        vy: (dy / dist) * speed + (Math.random() - 0.5) * 4 - 3,
+        vr: (Math.random() - 0.5) * 0.25,
+        r: 0,
+        alpha: 1,
+        color,
+        gravity: 0.18 + Math.random() * 0.12,
+      });
+    }
+
+    // Bright spark particles
+    const sparks = Math.max(3, Math.min(8, Math.round(area / 8000)));
+    for (let i = 0; i < sparks; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const spd   = 5 + Math.random() * 16;
+      shards.push({
+        pts: null,
+        cx: rect.left + Math.random() * rect.width,
+        cy: rect.top  + Math.random() * rect.height,
+        size: 2 + Math.random() * 5,
+        vx: Math.cos(angle) * spd,
+        vy: Math.sin(angle) * spd - 6,
+        vr: 0, r: 0,
+        alpha: 1,
+        color: `hsl(${Math.random() * 60 + 20},100%,${60 + Math.random() * 30}%)`,
+        gravity: 0.25 + Math.random() * 0.15,
+      });
+    }
+  });
+
+  // ── ANIMATE SHARDS ───────────────────────────────────────────
+  let explodeStart = null;
+  const EXPLODE_HOLD = 1200;   // ms shards fly freely
+  const EXPLODE_FADE = 1000;   // ms shards fade out
+
+  function animShards(ts) {
+    if (!explodeStart) explodeStart = ts;
+    const elapsed = ts - explodeStart;
+    shardCtx.clearRect(0, 0, W, H);
+
+    const fadeFraction = Math.max(0, Math.min(1, (elapsed - EXPLODE_HOLD) / EXPLODE_FADE));
+
+    shards.forEach(s => {
+      s.cx += s.vx;
+      s.cy += s.vy;
+      s.vy += s.gravity;
+      s.vx *= 0.995;
+      s.r  += s.vr;
+
+      const a = s.alpha * (1 - fadeFraction);
+      if (a < 0.01) return;
+
+      shardCtx.save();
+      shardCtx.globalAlpha = a;
+      shardCtx.translate(s.cx, s.cy);
+      shardCtx.rotate(s.r);
+
+      if (s.pts) {
+        shardCtx.fillStyle = s.color;
+        shardCtx.beginPath();
+        shardCtx.moveTo(s.pts[0].x, s.pts[0].y);
+        shardCtx.lineTo(s.pts[1].x, s.pts[1].y);
+        shardCtx.lineTo(s.pts[2].x, s.pts[2].y);
+        shardCtx.closePath();
+        shardCtx.fill();
+        // Electric edge glow
+        shardCtx.shadowBlur = 8;
+        shardCtx.shadowColor = 'rgba(120,220,255,0.9)';
+        shardCtx.strokeStyle = 'rgba(160,230,255,0.7)';
+        shardCtx.lineWidth = 0.8;
+        shardCtx.stroke();
+      } else {
+        shardCtx.shadowBlur = 12;
+        shardCtx.shadowColor = s.color;
+        shardCtx.fillStyle = s.color;
+        shardCtx.fillRect(-s.size / 2, -s.size / 2, s.size, s.size);
+      }
+      shardCtx.restore();
+    });
+
+    if (elapsed < EXPLODE_HOLD + EXPLODE_FADE) {
+      requestAnimationFrame(animShards);
+    }
+  }
+  requestAnimationFrame(animShards);
+
+  // ── BULLFROG IMAGE ───────────────────────────────────────────
+  const frogImg = document.createElement('img');
+  frogImg.src = 'images/bullfrog.jpeg';
+  frogImg.alt = 'The Bull Toad';
+  Object.assign(frogImg.style, {
+    position: 'absolute', left: '50%', top: '50%',
+    transform: 'translate(-50%, -50%)',
+    maxWidth: '55vw', maxHeight: '55vh',
+    objectFit: 'contain',
+    opacity: '0',
+    transition: 'opacity 2s ease-in',
+    borderRadius: '8px',
+    zIndex: '2',
+    boxShadow: '0 0 60px 20px rgba(255,100,0,0.5)',
+    filter: 'drop-shadow(0 0 20px rgba(255,120,0,0.8))',
+  });
+  overlay.appendChild(frogImg);
+
+  // Start frog fade-in shortly after explosion begins
+  setTimeout(() => {
+    frogImg.style.opacity = '1';
+
+    // Once frog is fully visible, show flame text
+    setTimeout(() => {
+      const flameCanvas = _createFlameTextCanvas(W, H);
+      flameCanvas.style.zIndex = '3';
+      overlay.appendChild(flameCanvas);
+
+      // After flame text plays, reform the site
+      setTimeout(() => {
+        _reformSite(overlay, savedStyles);
+      }, 3500);
+    }, 2050);
+  }, 600);
+}
+
+/* ── PROCEDURAL FIRE TEXT SHADER ────────────────────────────── */
+function _createFlameTextCanvas(W, H) {
+  const canvas = document.createElement('canvas');
+  const SCALE = 3;
+  const fw = Math.ceil(W / SCALE);
+  const fh = Math.ceil(Math.min(H * 0.4, 240) / SCALE);
+  canvas.width  = W;
+  canvas.height = fh * SCALE;
+  Object.assign(canvas.style, {
+    position: 'absolute',
+    left: '0',
+    bottom: '8%',
+    width: '100%',
+    height: `${fh * SCALE}px`,
+  });
+
+  const ctx = canvas.getContext('2d');
+
+  // Render text mask at low res
+  const textCanvas = document.createElement('canvas');
+  textCanvas.width  = fw;
+  textCanvas.height = fh;
+  const tctx = textCanvas.getContext('2d');
+  tctx.fillStyle = '#000';
+  tctx.fillRect(0, 0, fw, fh);
+  tctx.fillStyle = '#fff';
+  const fontSize = Math.max(8, Math.floor(fh * 0.38));
+  tctx.font = `bold ${fontSize}px "Oxanium", "Arial Black", sans-serif`;
+  tctx.textAlign = 'center';
+  tctx.textBaseline = 'middle';
+
+  // Wrap long text if needed
+  const line1 = 'YOU HAVE AWOKEN';
+  const line2 = 'THE BULL TOAD';
+  tctx.fillText(line1, fw / 2, fh * 0.35);
+  tctx.fillText(line2, fw / 2, fh * 0.72);
+
+  const tdata = tctx.getImageData(0, 0, fw, fh).data;
+  const mask  = new Uint8Array(fw * fh);
+  for (let i = 0; i < fw * fh; i++) mask[i] = tdata[i * 4] > 60 ? 1 : 0;
+
+  // Fire simulation buffers
+  let fire    = new Float32Array(fw * fh);
+  let fireBuf = new Float32Array(fw * fh);
+
+  // Temporary small canvas for putImageData
+  const tmpC = document.createElement('canvas');
+  tmpC.width  = fw;
+  tmpC.height = fh;
+  const tmpCtx = tmpC.getContext('2d');
+
+  let frame = 0;
+  let running = true;
+
+  function step() {
+    if (!running) return;
+
+    // Seed heat at text pixels each frame (bottom-up fire source)
+    for (let i = 0; i < fw * fh; i++) {
+      if (mask[i]) fire[i] = Math.min(255, fire[i] + 30 + Math.random() * 80);
+    }
+
+    // Cool & diffuse upward (y=0 is top)
+    for (let y = 0; y < fh - 1; y++) {
+      for (let x = 0; x < fw; x++) {
+        const c  = fire[(y + 1) * fw + x];
+        const l  = fire[(y + 1) * fw + Math.max(0, x - 1)];
+        const r2 = fire[(y + 1) * fw + Math.min(fw - 1, x + 1)];
+        const u  = y + 2 < fh ? fire[(y + 2) * fw + x] : c;
+        fireBuf[y * fw + x] = ((c + l + r2 + u) * 0.245) * 0.97;
+      }
+    }
+    // Bottom row stays seeded
+    for (let x = 0; x < fw; x++) {
+      fireBuf[(fh - 1) * fw + x] = fire[(fh - 1) * fw + x] * 0.97;
+    }
+    [fire, fireBuf] = [fireBuf, fire];
+
+    // Draw palette: black → red → orange → yellow → white
+    const imgData = tmpCtx.createImageData(fw, fh);
+    const d = imgData.data;
+    for (let i = 0; i < fw * fh; i++) {
+      const v = fire[i];
+      let rr = 0, gg = 0, bb = 0, aa = 0;
+      if (v > 0) {
+        rr = Math.min(255, v * 3.5);
+        gg = Math.min(255, Math.max(0, v * 2.2 - 80));
+        bb = Math.min(255, Math.max(0, v * 1.5 - 160));
+        aa = Math.min(255, v * 2.5);
+        // Add flicker noise
+        const noise = (Math.random() - 0.5) * 18;
+        rr = Math.min(255, Math.max(0, rr + noise));
+        gg = Math.min(255, Math.max(0, gg + noise * 0.5));
+      }
+      d[i * 4 + 0] = rr;
+      d[i * 4 + 1] = gg;
+      d[i * 4 + 2] = bb;
+      d[i * 4 + 3] = aa;
+    }
+    tmpCtx.putImageData(imgData, 0, 0);
+
+    ctx.clearRect(0, 0, W, fh * SCALE);
+    // Draw scaled-up fire (pixelated look)
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(tmpC, 0, 0, W, fh * SCALE);
+
+    // Draw text label on top (sharp, with ember glow)
+    ctx.save();
+    ctx.shadowBlur = 20 + Math.sin(frame * 0.15) * 8;
+    ctx.shadowColor = `hsl(${30 + Math.sin(frame * 0.1) * 15},100%,55%)`;
+    const dispFontSize = Math.max(16, Math.floor(fh * SCALE * 0.38));
+    ctx.font = `bold ${dispFontSize}px "Oxanium", "Arial Black", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    // Flaming gradient fill
+    const grad = ctx.createLinearGradient(0, 0, 0, fh * SCALE);
+    grad.addColorStop(0,   '#fffbe0');
+    grad.addColorStop(0.3, '#ffdd00');
+    grad.addColorStop(0.6, '#ff6a00');
+    grad.addColorStop(1,   '#cc1a00');
+    ctx.fillStyle = grad;
+    ctx.fillText(line1, W / 2, fh * SCALE * 0.35);
+    ctx.fillText(line2, W / 2, fh * SCALE * 0.72);
+    ctx.restore();
+
+    frame++;
+    requestAnimationFrame(step);
+  }
+
+  step();
+
+  // Expose stop method for cleanup
+  canvas._stopFire = () => { running = false; };
+  return canvas;
+}
+
+/* ── SITE REFORM ────────────────────────────────────────────── */
+function _reformSite(overlay, savedStyles) {
+  // Stop any fire shader
+  overlay.querySelectorAll('canvas').forEach(c => { if (c._stopFire) c._stopFire(); });
+
+  // Fade out overlay
+  overlay.style.transition = 'opacity 0.8s ease-out';
+  overlay.style.opacity = '0';
+
+  // Restore elements with a staggered fade-in
+  savedStyles.forEach(({ el, visibility, opacity, transition }, i) => {
+    el.style.visibility = visibility;
+    el.style.opacity = '0';
+    el.style.transition = 'opacity 0.6s ease-in';
+    setTimeout(() => {
+      el.style.opacity = opacity || '';
+      setTimeout(() => {
+        el.style.transition = transition;
+      }, 700);
+    }, 50 + (i % 20) * 15);
+  });
+
+  setTimeout(() => {
+    overlay.remove();
+  }, 900);
+}
+
 /* ── WIN98 TITLE-BAR BUTTONS (decorative easter eggs) ───────── */
 function initWindowButtons() {
   const minimize = document.querySelector('.titlebar-btn.minimize');
@@ -405,8 +768,8 @@ function initWindowButtons() {
     maximize.addEventListener('click', () => showToast("Window is already full-screen!"));
   }
   if (close) {
-    close.title = "Close is disabled here";
-    close.addEventListener('click', () => showToast("This window remains active."));
+    close.title = "DO NOT PRESS";
+    close.addEventListener('click', triggerBullToadExplosion);
   }
 }
 
