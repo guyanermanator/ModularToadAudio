@@ -601,11 +601,14 @@ function initButtonSounds() {
 
 /* ── CONTACT FORM HANDLING ──────────────────────────────────── */
 function initContactForm() {
-  const form = document.getElementById('contactForm');
+  const form      = document.getElementById('contactForm');
   if (!form) return;
 
   const fileInput = document.getElementById('audioFile');
   const fileName  = document.getElementById('fileName');
+  const statusDiv = document.getElementById('formStatus');
+
+  // Update file-chooser label with chosen filename(s).
   if (fileInput && fileName) {
     fileInput.addEventListener('change', () => {
       if (fileInput.files && fileInput.files.length > 0) {
@@ -617,25 +620,53 @@ function initContactForm() {
     });
   }
 
-  // Native POST submission avoids CSP connect-src restrictions on Neocities.
-  // Dynamically set the redirect URL so Web3Forms returns the user to this page.
-  const redirectInput = document.createElement('input');
-  redirectInput.type  = 'hidden';
-  redirectInput.name  = 'redirect';
-  redirectInput.value = window.location.origin + window.location.pathname + '?sent=1';
-  form.appendChild(redirectInput);
+  // Use fetch() so the request is governed by connect-src (not form-action).
+  // Neocities sets "form-action 'self'" which blocks native <form> POSTs to
+  // external domains, but does NOT restrict fetch/XHR.
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  // Show success banner when redirected back after a successful submission.
-  if (new URLSearchParams(window.location.search).get('sent') === '1') {
-    const msg = document.createElement('p');
-    msg.className = 'form-status-msg';
-    msg.setAttribute('aria-live', 'polite');
-    msg.style.fontSize = '11px';
-    msg.style.marginTop = '10px';
-    msg.style.color = '#0a8a22';
-    msg.textContent = 'Thanks! Your message was sent successfully.';
-    form.appendChild(msg);
-  }
+    const submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+    }
+
+    if (statusDiv) statusDiv.textContent = '';
+
+    try {
+      const data = new FormData(form);
+      const res  = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body:   data,
+      });
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        // Hide the form and show a success message.
+        form.style.display = 'none';
+        if (statusDiv) {
+          statusDiv.style.color     = '#0a8a22';
+          statusDiv.style.fontSize  = '13px';
+          statusDiv.style.marginTop = '10px';
+          statusDiv.textContent     = '✔ Thanks! Your message was sent successfully. We\'ll be in touch within 24 hours.';
+        }
+      } else {
+        throw new Error(json.message || 'Submission failed');
+      }
+    } catch (err) {
+      if (statusDiv) {
+        statusDiv.style.color     = '#cc0000';
+        statusDiv.style.fontSize  = '12px';
+        statusDiv.style.marginTop = '10px';
+        statusDiv.textContent     = '✖ Something went wrong — please try again or email us directly at ModularToadAudio@protonmail.com.';
+      }
+      if (submitBtn) {
+        submitBtn.disabled    = false;
+        submitBtn.textContent = 'Send Message';
+      }
+    }
+  });
 }
 
 /* ── SERVICE CARD HOVER SOUND ───────────────────────────────── */
