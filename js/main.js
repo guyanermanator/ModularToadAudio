@@ -768,7 +768,7 @@ async function initPortfolioPreviewCarousel() {
           <p class="portfolio-preview-summary">${item.summary}</p>
           <div class="portfolio-preview-actions">
             <span class="btn btn-secondary portfolio-preview-link">Open in Portfolio</span>
-            ${item.videoId ? `<span class="btn btn-primary portfolio-preview-link">Watch on YouTube</span>` : ''}
+            ${item.videoId ? `<span class="btn btn-primary portfolio-preview-link">Jump to Track</span>` : ''}
           </div>
         </div>
       </a>
