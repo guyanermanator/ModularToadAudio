@@ -7,12 +7,12 @@
 
 const SITE_ASSETS = Object.freeze({
   mascot:    'images/ModularToadAudio.jpg',
-  home:      'images/home.png',
-  services:  'images/services.png',
-  portfolio: 'images/portfoilo.svg',
-  pricing:   'images/priceing.png',
-  about:     'images/about.png',
-  contact:   'images/contact.png',
+  home:      'images/home/home.png',
+  services:  'images/services/services.png',
+  portfolio: 'images/portfolio/portfolio.svg',
+  pricing:   'images/pricing/pricing.png',
+  about:     'images/about/about.png',
+  contact:   'images/contact/contact.png',
 });
 
 const PAGE_META = Object.freeze({
