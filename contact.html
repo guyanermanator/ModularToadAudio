@@ -123,9 +123,8 @@
           <div class="panel-inset">
             <form
               id="contactForm"
-              action="https://api.web3forms.com/submit"
               method="POST"
-              enctype="multipart/form-data">
+              novalidate>
 
               <!-- Replace with your Web3Forms access key -->
               <input type="hidden" name="access_key" value="5192c8e6-6c5b-472c-9680-1ec67d83e3f0">
@@ -227,6 +226,9 @@
               </p>
 
             </form>
+
+            <!-- JS-injected status message lives here -->
+            <div id="formStatus" role="status" aria-live="polite"></div>
           </div><!-- /.panel-inset -->
 
         </div><!-- /.contact-layout -->
