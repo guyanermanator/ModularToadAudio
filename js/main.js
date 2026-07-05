@@ -617,58 +617,25 @@ function initContactForm() {
     });
   }
 
-  const setFormMessage = (text, tone = 'error') => {
-    const existing = form.querySelector('.form-status-msg');
-    if (existing) existing.remove();
+  // Native POST submission avoids CSP connect-src restrictions on Neocities.
+  // Dynamically set the redirect URL so Web3Forms returns the user to this page.
+  const redirectInput = document.createElement('input');
+  redirectInput.type  = 'hidden';
+  redirectInput.name  = 'redirect';
+  redirectInput.value = window.location.origin + window.location.pathname + '?sent=1';
+  form.appendChild(redirectInput);
 
+  // Show success banner when redirected back after a successful submission.
+  if (new URLSearchParams(window.location.search).get('sent') === '1') {
     const msg = document.createElement('p');
     msg.className = 'form-status-msg';
     msg.setAttribute('aria-live', 'polite');
     msg.style.fontSize = '11px';
     msg.style.marginTop = '10px';
-    msg.style.color = tone === 'success' ? '#0a8a22' : '#cc0000';
-    msg.textContent = text;
+    msg.style.color = '#0a8a22';
+    msg.textContent = 'Thanks! Your message was sent successfully.';
     form.appendChild(msg);
-  };
-
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    if (!form.reportValidity()) return;
-
-    const btn = form.querySelector('button[type="submit"]');
-    const defaultLabel = btn ? btn.textContent : '';
-    if (btn) {
-      btn.textContent = 'Sending message…';
-      btn.disabled = true;
-    }
-
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { Accept: 'application/json' }
-      });
-      const data = await response.json().catch(() => null);
-
-      if (!response.ok || (data && data.success === false)) {
-        const details = Array.isArray(data?.errors)
-          ? data.errors.map(err => (typeof err === 'string' ? err : err?.message)).filter(Boolean).join(' ')
-          : '';
-        throw new Error(data?.message || details || 'Unable to submit form right now.');
-      }
-
-      form.reset();
-      if (fileName) fileName.textContent = 'No file chosen';
-      setFormMessage('Thanks! Your message was sent successfully.', 'success');
-      if (btn) btn.textContent = 'Sent!';
-    } catch (error) {
-      setFormMessage(error.message || 'Submission failed. Please try again.', 'error');
-      if (btn) btn.textContent = defaultLabel || 'Send Message';
-    } finally {
-      if (btn) btn.disabled = false;
-    }
-  });
+  }
 }
 
 /* ── SERVICE CARD HOVER SOUND ───────────────────────────────── */
