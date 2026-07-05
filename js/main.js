@@ -617,56 +617,14 @@ function initContactForm() {
     });
   }
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
+  form.addEventListener('submit', () => {
     const btn = form.querySelector('button[type="submit"]');
     const errorEl = form.querySelector('.form-error-msg');
     if (errorEl) errorEl.remove();
-
-    if (btn) {
-      btn.textContent = 'Sending…';
-      btn.disabled = true;
-    }
-
-    try {
-      const formData = new FormData(form);
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (response.ok) {
-        // Replace form content with success message
-        const successDiv = document.createElement('div');
-        successDiv.className = 'form-success';
-        successDiv.innerHTML =
-          '<span class="form-success-icon" aria-hidden="true">✔</span>' +
-          '<div><strong>Message sent successfully!</strong>' +
-          'Thanks for reaching out — we\'ll get back to you within 24 hours. ' +
-          'Keep an eye on your inbox (and spam folder just in case).</div>';
-        form.replaceWith(successDiv);
-      } else {
-        let errMsg = 'Something went wrong. Please try again or email us directly.';
-        try {
-          const data = await response.json();
-          if (data && data.errors) {
-            errMsg = data.errors.map(err => err.message).join(', ');
-          }
-        } catch (_) { /* ignore parse errors */ }
-        throw new Error(errMsg);
-      }
-    } catch (err) {
-      if (btn) {
-        btn.textContent = 'Send Message';
-        btn.disabled = false;
-      }
-      const msg = document.createElement('p');
-      msg.className = 'form-error-msg';
-      msg.textContent = err.message || 'Unable to send. Please email us directly at ModularToadAudio@protonmail.com';
-      form.appendChild(msg);
-    }
+    if (!form.reportValidity()) return;
+    if (!btn) return;
+    btn.textContent = 'Opening secure form…';
+    btn.disabled = true;
   });
 }
 
@@ -733,9 +691,7 @@ function initBootSequence() {
 async function initPortfolioPreviewCarousel() {
   const carousel = document.getElementById('portfolioPreviewCarousel');
   const track = document.getElementById('portfolioPreviewTrack');
-  const prev  = document.getElementById('portfolioPrev');
-  const next  = document.getElementById('portfolioNext');
-  if (!carousel || !track || !prev || !next) return;
+  if (!carousel || !track) return;
 
   const status = document.createElement('p');
   status.id = 'portfolioPreviewStatus';
@@ -757,6 +713,21 @@ async function initPortfolioPreviewCarousel() {
     return match ? match[1] : '';
   };
 
+  const slugify = (value = '') => value
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  const shuffle = (items) => {
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const swapIndex = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[swapIndex]] = [copy[swapIndex], copy[i]];
+    }
+    return copy;
+  };
+
   try {
     const res = await fetch('portfolio.html', { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load portfolio');
@@ -773,20 +744,21 @@ async function initPortfolioPreviewCarousel() {
       const summary = card.querySelector('div[style*="font-size:11px"]')?.textContent?.replace(/\s+/g, ' ').trim()
         || `${prettyCategory(category)} showcase`;
       const cover = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
-      const destination = videoId ? `https://www.youtube.com/watch?v=${videoId}` : 'portfolio.html';
+      const anchorId = card.id || slugify(title) || `submission-${idx + 1}`;
+      const destination = `portfolio.html#${anchorId}`;
       return { title, category, src, videoId, summary, cover, destination };
     }).filter(item => item.title);
 
     if (!items.length) {
       track.innerHTML = '<p class="portfolio-preview-empty">Portfolio submissions will appear here automatically.</p>';
       status.textContent = 'Portfolio preview unavailable.';
-      prev.disabled = true;
-      next.disabled = true;
       return;
     }
 
-    track.innerHTML = items.map((item, idx) => `
-      <article class="portfolio-preview-slide window${idx === 0 ? ' is-active' : ''}" data-index="${idx}" data-target="${item.destination}" data-external="${item.videoId ? 'true' : 'false'}" tabindex="0" role="link" aria-label="${item.title} — ${prettyCategory(item.category)}">
+    const previewItems = shuffle(items).slice(0, Math.min(3, items.length));
+
+    track.innerHTML = previewItems.map((item, idx) => `
+      <a class="portfolio-preview-slide window" href="${item.destination}" aria-label="Open ${item.title} in the portfolio">
         <div class="portfolio-preview-cover"${item.cover ? ` style="background-image:linear-gradient(180deg, rgba(5, 9, 19, 0.08), rgba(5, 9, 19, 0.92)), url('${item.cover}')"` : ''}>
           <span class="portfolio-preview-chip">${prettyCategory(item.category)}</span>
           <span class="portfolio-preview-count">${String(idx + 1).padStart(2, '0')}</span>
@@ -795,170 +767,16 @@ async function initPortfolioPreviewCarousel() {
           <h3 class="portfolio-preview-title">${item.title}</h3>
           <p class="portfolio-preview-summary">${item.summary}</p>
           <div class="portfolio-preview-actions">
-            <a class="btn btn-secondary portfolio-preview-link" href="portfolio.html">Open in Portfolio</a>
-            ${item.videoId ? `<a class="btn btn-primary portfolio-preview-link" href="https://www.youtube.com/watch?v=${item.videoId}" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>` : ''}
+            <span class="btn btn-secondary portfolio-preview-link">Open in Portfolio</span>
+            ${item.videoId ? `<span class="btn btn-primary portfolio-preview-link">Watch on YouTube</span>` : ''}
           </div>
         </div>
-      </article>
+      </a>
     `).join('');
-
-    const slides = Array.from(track.querySelectorAll('.portfolio-preview-slide'));
-    let currentIndex = 0;
-    let pointerDown = false;
-    let dragging = false;
-    let dragMoved = false;
-    let startX = 0;
-    let startScrollLeft = 0;
-    let scrollTimer = null;
-
-    const updateButtons = () => {
-      const disabled = slides.length <= 1;
-      prev.disabled = disabled;
-      next.disabled = disabled;
-      status.textContent = `${currentIndex + 1} / ${slides.length} — ${items[currentIndex].title} — click active card to open`;
-    };
-
-    const setActive = (index, { scroll = true } = {}) => {
-      currentIndex = (index + slides.length) % slides.length;
-      slides.forEach((slide, slideIndex) => {
-        slide.classList.toggle('is-active', slideIndex === currentIndex);
-      });
-      if (scroll) {
-        slides[currentIndex].scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center',
-        });
-      }
-      updateButtons();
-    };
-
-    const openSlide = (slideIndex) => {
-      const slide = slides[slideIndex];
-      if (!slide) return;
-      const target = slide.dataset.target;
-      if (!target) return;
-
-      if (slide.dataset.external === 'true') {
-        window.open(target, '_blank', 'noopener,noreferrer');
-        return;
-      }
-
-      window.location.href = target;
-    };
-
-    const findClosestSlide = () => {
-      const bounds = track.getBoundingClientRect();
-      const center = bounds.left + bounds.width / 2;
-      let nearestIndex = 0;
-      let nearestDistance = Number.POSITIVE_INFINITY;
-
-      slides.forEach((slide, slideIndex) => {
-        const rect = slide.getBoundingClientRect();
-        const slideCenter = rect.left + rect.width / 2;
-        const distance = Math.abs(slideCenter - center);
-        if (distance < nearestDistance) {
-          nearestDistance = distance;
-          nearestIndex = slideIndex;
-        }
-      });
-
-      return nearestIndex;
-    };
-
-    prev.addEventListener('click', () => setActive(currentIndex - 1));
-    next.addEventListener('click', () => setActive(currentIndex + 1));
-
-    slides.forEach((slide, slideIndex) => {
-      slide.addEventListener('click', (event) => {
-        if (dragMoved) {
-          event.preventDefault();
-          event.stopPropagation();
-          return;
-        }
-        if (event.target.closest('a')) return;
-        if (slideIndex === currentIndex) {
-          openSlide(slideIndex);
-          return;
-        }
-        setActive(slideIndex);
-      });
-
-      slide.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          if (slideIndex === currentIndex) {
-            openSlide(slideIndex);
-            return;
-          }
-          setActive(slideIndex);
-        }
-      });
-    });
-
-    track.addEventListener('scroll', () => {
-      clearTimeout(scrollTimer);
-      scrollTimer = window.setTimeout(() => {
-        setActive(findClosestSlide(), { scroll: false });
-      }, 90);
-    }, { passive: true });
-
-    track.addEventListener('pointerdown', (event) => {
-      if (event.button !== 0) return;
-      if (event.target.closest('a, button')) return;
-      pointerDown = true;
-      dragging = false;
-      dragMoved = false;
-      startX = event.clientX;
-      startScrollLeft = track.scrollLeft;
-      track.classList.add('is-pointer-down');
-      track.setPointerCapture(event.pointerId);
-    });
-
-    track.addEventListener('pointermove', (event) => {
-      if (!pointerDown) return;
-      const delta = event.clientX - startX;
-      if (!dragging && Math.abs(delta) > 6) {
-        dragging = true;
-        dragMoved = true;
-        track.classList.add('dragging');
-      }
-      if (!dragging) return;
-      event.preventDefault();
-      track.scrollLeft = startScrollLeft - delta;
-    });
-
-    const stopDragging = (event) => {
-      if (!pointerDown) return;
-      pointerDown = false;
-      track.classList.remove('is-pointer-down', 'dragging');
-      if (event && track.hasPointerCapture(event.pointerId)) {
-        track.releasePointerCapture(event.pointerId);
-      }
-      if (dragging) {
-        dragging = false;
-        setActive(findClosestSlide());
-        window.setTimeout(() => { dragMoved = false; }, 0);
-        return;
-      }
-      dragMoved = false;
-    };
-
-    track.addEventListener('pointerup', stopDragging);
-    track.addEventListener('pointercancel', stopDragging);
-    track.addEventListener('lostpointercapture', () => {
-      pointerDown = false;
-      dragging = false;
-      dragMoved = false;
-      track.classList.remove('is-pointer-down', 'dragging');
-    });
-
-    setActive(0, { scroll: false });
+    status.textContent = `${previewItems.length} random portfolio picks loaded.`;
   } catch (_) {
     track.innerHTML = '<p class="portfolio-preview-empty">Portfolio preview is temporarily unavailable.</p>';
     status.textContent = 'Portfolio preview unavailable.';
-    prev.disabled = true;
-    next.disabled = true;
   }
 }
 
