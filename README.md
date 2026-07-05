@@ -49,18 +49,18 @@ Every push to `main` auto-deploys to Neocities via the included GitHub Actions w
 
 ---
 
-## 📧 Contact Form Setup (Formspree — free)
+## 📧 Contact Form Setup (Web3Forms — free)
 
-The contact form needs a free Formspree account to deliver emails.
+The contact form uses a free [Web3Forms](https://web3forms.com) endpoint so it works on static hosting with no backend.
 
-1. Go to [formspree.io](https://formspree.io) and sign up for free.
-2. Click **New Form**, set the notification email to `ModularToadAudio@protonmail.com`.
-3. Copy your form ID (e.g. `abcdefgh`).
-4. Open `contact.html` and replace `FORMSPREE_FORM_ID_HERE` with your actual ID:
+1. Go to [web3forms.com](https://web3forms.com) and create a free account.
+2. Create a form and copy your **Access Key**.
+3. Open `contact.html` and replace `WEB3FORMS_ACCESS_KEY_HERE` with your key:
    ```html
-   action="https://formspree.io/f/abcdefgh"
+   action="https://api.web3forms.com/submit"
+   <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
    ```
-5. Save and push — the form will now deliver emails including file attachments (up to 25 MB).
+4. Save and push — form submissions will be delivered to your configured email.
 
 > **Large files (>25 MB):** The contact form already prompts clients to share a Google Drive / WeTransfer link in their message.
 

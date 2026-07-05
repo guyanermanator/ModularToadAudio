@@ -649,13 +649,13 @@ function initContactForm() {
         body: new FormData(form),
         headers: { Accept: 'application/json' }
       });
+      const data = await response.json().catch(() => null);
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        const details = Array.isArray(data.errors)
-          ? data.errors.map(err => err.message).filter(Boolean).join(' ')
+      if (!response.ok || (data && data.success === false)) {
+        const details = Array.isArray(data?.errors)
+          ? data.errors.map(err => (typeof err === 'string' ? err : err?.message)).filter(Boolean).join(' ')
           : '';
-        throw new Error(details || 'Unable to submit form right now.');
+        throw new Error(data?.message || details || 'Unable to submit form right now.');
       }
 
       form.reset();
