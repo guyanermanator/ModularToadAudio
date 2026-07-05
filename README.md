@@ -11,10 +11,10 @@ A Windows 98 / pixel-art-inspired static website for the ModularToadAudio audio 
 | File | Page |
 |---|---|
 | `index.html` | Home — hero, services overview, portfolio preview |
-| `services.html` | Services — mixing, mastering, podcast editing, loudness, stems |
+| `services.html` | Services — mixing, mastering, loudness, stems |
 | `portfolio.html` | Portfolio — embedded YouTube videos |
 | `pricing.html` | Pricing — $120 standard / $60 new-customer discount |
-| `about.html` | About — company story, mission, values |
+| `about.html` | About — company story |
 | `contact.html` | Contact — form with file attachment |
 
 ---
@@ -87,7 +87,7 @@ The contact form needs a free Formspree account to deliver emails.
    ```
 5. Delete or comment out the `<div class="portfolio-placeholder">` above it.
 6. Update the `data-category` attribute on the parent `<div>` to match the filter:
-   `mixing`, `mastering`, or `podcast`.
+   `mix-master` (or another custom category you also add to the filter buttons).
 
 ---
 
