@@ -121,114 +121,93 @@
 
           <!-- ── CONTACT FORM ───────────────────────────── -->
           <div class="panel-inset">
-            <form
-              id="contactForm"
-              method="POST"
-              novalidate>
+           <form
+             id="contactForm"
+             action="mailto:ModularToadAudio@protonmail.com"
+             method="post"
+             enctype="text/plain">
 
-              <!-- Replace with your Web3Forms access key -->
-              <input type="hidden" name="access_key" value="5192c8e6-6c5b-472c-9680-1ec67d83e3f0">
-              <!-- Hidden field so you know it came from the website -->
-              <input type="hidden" name="subject" value="New Enquiry — ModularToadAudio">
-              <!-- Web3Forms honeypot (spam protection) -->
-              <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+             <!-- Name -->
+             <div class="form-group">
+               <label class="form-label" for="name">
+                 Your Name <span aria-hidden="true" style="color:#cc0000">*</span>
+               </label>
+               <input
+                 class="form-input"
+                 type="text"
+                 id="name"
+                 name="name"
+                 placeholder="e.g. Alex Rivera"
+                 required
+                 autocomplete="name">
+             </div>
 
-              <!-- Name -->
-              <div class="form-group">
-                <label class="form-label" for="name">
-                  Your Name <span aria-hidden="true" style="color:#cc0000">*</span>
-                </label>
-                <input
-                  class="form-input"
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="e.g. Alex Rivera"
-                  required
-                  autocomplete="name">
-              </div>
+             <!-- Email -->
+             <div class="form-group">
+               <label class="form-label" for="email">
+                 Your Email <span aria-hidden="true" style="color:#cc0000">*</span>
+               </label>
+               <input
+                 class="form-input"
+                 type="email"
+                 id="email"
+                 name="email"
+                 placeholder="e.g. you@example.com"
+                 required
+                 autocomplete="email">
+             </div>
 
-              <!-- Email -->
-              <div class="form-group">
-                <label class="form-label" for="email">
-                  Your Email <span aria-hidden="true" style="color:#cc0000">*</span>
-                </label>
-                <input
-                  class="form-input"
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="e.g. you@example.com"
-                  required
-                  autocomplete="email">
-              </div>
+             <!-- Service Interest -->
+             <div class="form-group">
+               <label class="form-label" for="service">Service You're Interested In</label>
+               <select class="form-select" id="service" name="service">
+                 <option value="">— Select a service —</option>
+                 <option value="mixing">Mixing</option>
+                 <option value="mastering">Mastering</option>
+                 <option value="mixing-mastering">Mixing + Mastering</option>
+                 <option value="loudness">Loudness Normalization</option>
+                 <option value="stems">Stem Preparation / Separation</option>
+                 <option value="free-eval">Free Mix Evaluation</option>
+                 <option value="custom">Custom / Not Sure Yet</option>
+               </select>
+             </div>
 
-              <!-- Service Interest -->
-              <div class="form-group">
-                <label class="form-label" for="service">Service You're Interested In</label>
-                <select class="form-select" id="service" name="service">
-                  <option value="">— Select a service —</option>
-                  <option value="mixing">Mixing</option>
-                  <option value="mastering">Mastering</option>
-                  <option value="mixing-mastering">Mixing + Mastering</option>
-                  <option value="loudness">Loudness Normalization</option>
-                  <option value="stems">Stem Preparation / Separation</option>
-                  <option value="free-eval">Free Mix Evaluation</option>
-                  <option value="custom">Custom / Not Sure Yet</option>
-                </select>
-              </div>
+             <!-- Message -->
+             <div class="form-group">
+               <label class="form-label" for="message">
+                 Message <span aria-hidden="true" style="color:#cc0000">*</span>
+               </label>
+               <textarea
+                 class="form-textarea"
+                 id="message"
+                 name="message"
+                 placeholder="Tell us about your project — genre, BPM, deadline, any references you love, or anything else that helps us understand what you're going for."
+                 required></textarea>
+             </div>
 
-              <!-- Message -->
-              <div class="form-group">
-                <label class="form-label" for="message">
-                  Message <span aria-hidden="true" style="color:#cc0000">*</span>
-                </label>
-                <textarea
-                  class="form-textarea"
-                  id="message"
-                  name="message"
-                  placeholder="Tell us about your project — genre, BPM, deadline, any references you love, or anything else that helps us understand what you're going for."
-                  required></textarea>
-              </div>
+             <div class="notice notice-info" style="margin-bottom:12px">
+               <span class="notice-icon" aria-hidden="true">▲</span>
+               <span style="font-size:11px">
+                 To attach audio files, please share a Google Drive, Dropbox or WeTransfer link in your message.
+               </span>
+             </div>
 
-              <!-- File attachment -->
-              <div class="form-group">
-                <label class="form-label">Audio File (optional)</label>
-                <label class="form-file-label" for="audioFile">
-                  Choose File
-                </label>
-                <input
-                  class="form-file-input"
-                  type="file"
-                  id="audioFile"
-                  name="audioFile"
-                  accept="audio/*,.wav,.mp3,.aiff,.aif,.flac,.ogg,.m4a,.zip">
-                <div class="form-file-name" id="fileName" aria-live="polite">No file chosen</div>
-                <div style="font-size:11px;color:var(--gray-dark);margin-top:4px">
-                  Accepted: WAV, MP3, AIFF, FLAC, OGG, M4A, ZIP · Max 25 MB<br>
-                  Larger files? Share a Google Drive / WeTransfer link in your message.
-                </div>
-              </div>
+             <!-- Submit -->
+             <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+               <button type="submit" class="btn btn-primary">
+                 Send Message
+               </button>
+               <span style="font-size:11px;color:var(--gray-dark)">
+                 Opens your email client — we respond within 24 hours.
+               </span>
+             </div>
 
-              <!-- Submit -->
-              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-                <button type="submit" class="btn btn-primary">
-                  Send Message
-                </button>
-                <span style="font-size:11px;color:var(--gray-dark)">
-                  We respond within 24 hours.
-                </span>
-              </div>
+             <!-- Required field note -->
+             <p style="font-size:11px;color:var(--gray-dark);margin-top:10px">
+               <span style="color:#cc0000">*</span> Required fields
+             </p>
 
-              <!-- Required field note -->
-              <p style="font-size:11px;color:var(--gray-dark);margin-top:10px">
-                <span style="color:#cc0000">*</span> Required fields
-              </p>
-
-            </form>
-
-            <!-- JS-injected status message lives here -->
-            <div id="formStatus" role="status" aria-live="polite"></div>
+           </form>
           </div><!-- /.panel-inset -->
 
         </div><!-- /.contact-layout -->
