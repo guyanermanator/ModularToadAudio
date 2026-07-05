@@ -49,6 +49,52 @@
   --ps2-glow-dim:    rgba(40, 110, 220, 0.24);
 }
 
+.desktop-icon-emoji[data-icon-key="contact"],
+.titlebar-icon[data-icon-key="contact"] {
+  border-color: #5cff88;
+  background: linear-gradient(140deg, #114625, #1a7b3a);
+}
+.desktop-icon-emoji[data-icon-key="about"],
+.titlebar-icon[data-icon-key="about"] {
+  border-color: #60f8ff;
+  background: linear-gradient(140deg, #0f4161, #177ea4);
+}
+.desktop-icon-emoji[data-icon-key="pricing"],
+.titlebar-icon[data-icon-key="pricing"] {
+  border-color: #ffe56a;
+  background: linear-gradient(140deg, #665508, #b28a18);
+}
+.desktop-icon-emoji[data-icon-key="portfolio"],
+.titlebar-icon[data-icon-key="portfolio"] {
+  border-color: #f07cff;
+  background: linear-gradient(140deg, #5d2474, #9f3bc8);
+}
+.desktop-icon-emoji[data-icon-key="services"],
+.titlebar-icon[data-icon-key="services"] {
+  border-color: #d7d7dd;
+  background: linear-gradient(140deg, #666674, #9a9aa7);
+}
+.desktop-icon-emoji[data-icon-key="contact"] .desktop-icon-image,
+.titlebar-icon[data-icon-key="contact"] .titlebar-icon-image {
+  filter: hue-rotate(98deg) saturate(1.25);
+}
+.desktop-icon-emoji[data-icon-key="about"] .desktop-icon-image,
+.titlebar-icon[data-icon-key="about"] .titlebar-icon-image {
+  filter: hue-rotate(158deg) saturate(1.2);
+}
+.desktop-icon-emoji[data-icon-key="pricing"] .desktop-icon-image,
+.titlebar-icon[data-icon-key="pricing"] .titlebar-icon-image {
+  filter: hue-rotate(300deg) saturate(1.35) brightness(1.05);
+}
+.desktop-icon-emoji[data-icon-key="portfolio"] .desktop-icon-image,
+.titlebar-icon[data-icon-key="portfolio"] .titlebar-icon-image {
+  filter: hue-rotate(236deg) saturate(1.3);
+}
+.desktop-icon-emoji[data-icon-key="services"] .desktop-icon-image,
+.titlebar-icon[data-icon-key="services"] .titlebar-icon-image {
+  filter: saturate(0.15) brightness(1.15);
+}
+
 /* ── RESET ──────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 13px; scroll-behavior: smooth; }
@@ -60,6 +106,11 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   line-height: 1.6;
+}
+
+@keyframes heroRainbowShift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
 }
 
 a { color: var(--toad-light); text-decoration: none; }
@@ -116,12 +167,13 @@ img, svg { display: block; max-width: 100%; }
 /* ── DESKTOP ICONS (Win98 fixed-left shortcuts) ──────────────── */
 .desktop-icons {
   position: fixed;
-  left: 8px;
+  left: 10px;
   top: calc(var(--nav-h) + 8px);
   bottom: calc(var(--task-h) + 8px);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 8px;
+  padding: 8px 12px 8px 4px;
   z-index: 100;
   pointer-events: none;
   overflow-y: auto;
@@ -566,13 +618,15 @@ img, svg { display: block; max-width: 100%; }
 .section-title {
   font-family: var(--font-pixel);
   font-size: clamp(12px, 1.4vw, 18px);
-  color: var(--toad-light);
+  color: #6ef3ff;
   margin-bottom: 14px;
   padding-bottom: 8px;
-  border-bottom: 2px solid var(--toad-dark);
+  border-bottom: 2px solid #1d7fa6;
   text-transform: uppercase;
   letter-spacing: .12em;
   line-height: 1.35;
+  text-align: center;
+  font-weight: 700;
 }
 
 /* ── WELCOME SECTION ────────────────────────────────────────── */
@@ -585,23 +639,18 @@ img, svg { display: block; max-width: 100%; }
 }
 .welcome-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  justify-content: center;
   padding: 14px 16px 12px;
   border-bottom: 1px solid rgba(100,170,255,0.15);
   background: rgba(0,0,0,0.2);
 }
-.welcome-header-icon {
-  font-size: 28px;
-  flex-shrink: 0;
-  filter: drop-shadow(0 0 6px rgba(110,214,255,0.5));
-}
 .welcome-header-text {
   font-family: var(--font-heavy);
   font-size: clamp(14px, 3vw, 20px);
-  color: var(--toad-pale);
+  color: #6ef3ff;
   letter-spacing: .04em;
   text-shadow: 0 0 10px rgba(110,214,255,0.25);
+  text-align: center;
 }
 .welcome-body {
   padding: 16px;
@@ -632,19 +681,13 @@ img, svg { display: block; max-width: 100%; }
   border-color: rgba(110, 214, 255, 0.45);
   background: rgba(45, 88, 190, 0.22);
 }
-.welcome-highlight-icon {
-  font-size: 22px;
-  display: block;
-  margin-bottom: 6px;
-  filter: drop-shadow(0 0 4px rgba(110,214,255,0.35));
-  font-family: 'Segoe UI Symbol', 'Noto Sans Symbols', 'Apple Symbols', system-ui, sans-serif;
-}
 .welcome-highlight-label {
   font-size: 11px;
   font-weight: bold;
-  color: var(--toad-light);
+  color: #6ef3ff;
   display: block;
   margin-bottom: 3px;
+  text-align: center;
 }
 .welcome-highlight-desc {
   font-size: 10px;
@@ -780,6 +823,26 @@ img, svg { display: block; max-width: 100%; }
   animation: heroTitleAnim 10s ease-in-out infinite;
   cursor: default;
 }
+.hero-title-rainbow {
+  background: linear-gradient(
+    90deg,
+    #ff4d4d,
+    #ffb84d,
+    #fff34d,
+    #58ff71,
+    #4dc3ff,
+    #7a5cff,
+    #ff4dd2,
+    #ff4d4d
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation:
+    heroTitleAnim 10s ease-in-out infinite,
+    heroRainbowShift 18s linear infinite;
+}
 
 .hero-tagline {
   font-size: clamp(15px, 2vw, 21px);
@@ -821,20 +884,22 @@ img, svg { display: block; max-width: 100%; }
 }
 
 .service-card-icon {
-  font-size: 26px;
-  display: block;
-  margin-bottom: 8px;
+  display: none;
 }
 .service-card-title {
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 6px;
-  color: var(--toad-light);
+  color: #6ef3ff;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .06em;
 }
 .service-card p {
   font-size: 13px;
   color: var(--text-muted);
   line-height: 1.65;
+  text-align: center;
 }
 
 /* Full-width service detail rows */
@@ -848,17 +913,21 @@ img, svg { display: block; max-width: 100%; }
   border-color: var(--bdr-lt) var(--bdr-dk) var(--bdr-dk) var(--bdr-lt);
   align-items: flex-start;
 }
-.service-row-icon { font-size: 32px; flex-shrink: 0; }
+.service-row-icon { display: none; }
 .service-row-body h3 {
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 6px;
-  color: var(--toad-light);
+  color: #6ef3ff;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .06em;
 }
 .service-row-body p {
   font-size: 13px;
   color: var(--text-muted);
   line-height: 1.7;
+  text-align: center;
 }
 .service-tags { margin-top: 6px; }
 
@@ -1451,7 +1520,7 @@ cite {
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   scroll-behavior: smooth;
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;

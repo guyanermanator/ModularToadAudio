@@ -76,6 +76,7 @@ function initSharedBranding() {
     const meta = getPageMeta(currentFile);
     decorateIconChip(titlebarIcon, meta.icon, 'titlebar-icon-image');
     titlebarIcon.classList.add('titlebar-icon-thumb');
+    titlebarIcon.dataset.iconKey = meta.key;
   }
 }
 
@@ -320,8 +321,10 @@ function initDesktopIcons() {
     const href = normalisePageHref(icon.getAttribute('href') || '');
     const meta = getPageMeta(href);
     const chip = icon.querySelector('.desktop-icon-emoji');
+    icon.dataset.iconKey = meta.key;
     if (chip) {
       chip.classList.add('desktop-icon-thumb');
+      chip.dataset.iconKey = meta.key;
       decorateIconChip(chip, meta.icon, 'desktop-icon-image');
     }
     if (href === currentFile || (currentFile === '' && href === 'index.html')) {
@@ -685,6 +688,27 @@ function initPageAnimation() {
   }
 }
 
+/* ── RANDOM HOMEPAGE CTA BLURB ───────────────────────────────── */
+function initRandomCtaBlurb() {
+  const ctaHeading = document.querySelector('#cta-heading.random-cta-text');
+  if (!ctaHeading) return;
+  const blurbs = [
+    'Ready for Toad?',
+    "Oh, it's Chumby Time",
+    'Let Me Ruin Your Music',
+    'BEHOLD THE WIZARD',
+    "Let's get creative",
+    'What If We Shared Lilly Pads 🐸',
+    "Uh oh, there's a frog in my mix?!",
+    'Who Put This Toad In My Mix?',
+    "LΞT'S GΞT MODULAR",
+    'Go For Chumby',
+    'Better Call Chumby',
+  ];
+  const randomIndex = Math.floor(Math.random() * blurbs.length);
+  ctaHeading.textContent = blurbs[randomIndex];
+}
+
 /* ── BOOT SEQUENCE TYPING (hero title only) ─────────────────── */
 function initBootSequence() {
   const heroTitle = document.getElementById('heroTitle');
@@ -722,7 +746,6 @@ async function initPortfolioPreviewCarousel() {
   const prettyCategory = (category = '') => {
     const map = {
       all: 'All',
-      podcast: 'Podcast',
       'mix-master': 'Mix & Master',
       submission: 'Submission',
     };
@@ -871,7 +894,7 @@ async function initPortfolioPreviewCarousel() {
     track.addEventListener('pointermove', (event) => {
       if (!pointerDown) return;
       const delta = event.clientX - startX;
-      if (!dragging && Math.abs(delta) > 8) {
+      if (!dragging && Math.abs(delta) > 3) {
         dragging = true;
         dragMoved = true;
         track.classList.add('dragging');
@@ -894,6 +917,9 @@ async function initPortfolioPreviewCarousel() {
         window.requestAnimationFrame(() => { dragMoved = false; });
         return;
       }
+      const bounds = track.getBoundingClientRect();
+      const isLeftHalf = event.clientX < (bounds.left + bounds.width / 2);
+      setActive(isLeftHalf ? currentIndex - 1 : currentIndex + 1);
       dragMoved = false;
     };
 
@@ -931,6 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initServiceCardSounds();
   initPageAnimation();
+  initRandomCtaBlurb();
   initBootSequence();
   initPortfolioPreviewCarousel();
 });
