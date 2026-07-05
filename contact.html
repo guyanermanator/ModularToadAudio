@@ -66,151 +66,80 @@
           <h1 class="section-title" id="contact-heading">Get in Touch</h1>
           <p style="font-size:13px;line-height:1.7;margin-bottom:14px">
             Ready to work together, have a question, or want a free mix evaluation?
-            Fill out the form below and we'll respond within 24 hours.
+            Send us an email and we'll respond within 24 hours.
           </p>
         </section>
 
-        <div class="contact-layout">
+        <!-- ── EMAIL CONTACT ──────────────────────────────────── -->
+        <div class="panel-inset" style="max-width:620px">
 
-          <!-- ── CONTACT INFO PANEL ─────────────────────── -->
-          <aside class="contact-info-panel" aria-label="Contact information">
-            <h2>Contact Info</h2>
-
-            <div class="contact-detail">
-              <span class="contact-detail-icon" aria-hidden="true">✉</span>
-              <div>
-                <strong style="display:block;margin-bottom:2px">Email</strong>
-                <a href="mailto:ModularToadAudio@protonmail.com">ModularToadAudio@protonmail.com</a>
-              </div>
+          <div class="contact-detail" style="margin-bottom:20px">
+            <span class="contact-detail-icon" aria-hidden="true">✉</span>
+            <div>
+              <strong style="display:block;margin-bottom:4px;font-size:13px">Our Email</strong>
+              <a href="mailto:ModularToadAudio@protonmail.com" style="font-size:15px">ModularToadAudio@protonmail.com</a>
             </div>
+          </div>
 
-            <div class="contact-detail">
-              <span class="contact-detail-icon" aria-hidden="true">◷</span>
-              <div>
-                <strong style="display:block;margin-bottom:2px">Response Time</strong>
-                Within 24 hours
-              </div>
-            </div>
+          <div class="pixel-divider" aria-hidden="true"></div>
 
-            <div class="contact-detail">
-              <span class="contact-detail-icon" aria-hidden="true">★</span>
-              <div>
-                <strong style="display:block;margin-bottom:2px">Free Offer</strong>
-                Free mix evaluation for first-time clients
-              </div>
-            </div>
+          <h2 style="font-family:var(--font-pixel);font-size:13px;color:var(--toad-light);margin-bottom:12px">Email Guidelines</h2>
 
-            <div class="contact-detail">
-              <span class="contact-detail-icon" aria-hidden="true">✦</span>
-              <div>
-                <strong style="display:block;margin-bottom:2px">New Customer?</strong>
-                Mention it in your message for 50% off your first track
-              </div>
-            </div>
-
-            <div class="pixel-divider" aria-hidden="true"></div>
-
-            <div class="notice notice-info" style="margin:0">
-              <span class="notice-icon" aria-hidden="true">▲</span>
-              <span style="font-size:11px">
-                For audio files <strong>larger than 25 MB</strong>, please share a
-                Google Drive, Dropbox or WeTransfer link in your message.
+          <div class="contact-detail">
+            <span class="contact-detail-icon" aria-hidden="true">▶</span>
+            <div>
+              <strong style="display:block;margin-bottom:2px;font-size:12px">Subject Line</strong>
+              <span style="font-size:12px;line-height:1.7">
+                Include the service you're interested in — e.g.
+                <em>"Mixing — [Artist Name] — [Track Title]"</em> or
+                <em>"Mastering Enquiry"</em>. This helps us route your email quickly.
               </span>
             </div>
-          </aside>
+          </div>
 
-          <!-- ── CONTACT FORM ───────────────────────────── -->
-          <div class="panel-inset">
-           <form
-             id="contactForm"
-             action="mailto:ModularToadAudio@protonmail.com"
-             method="post"
-             enctype="text/plain">
+          <div class="contact-detail">
+            <span class="contact-detail-icon" aria-hidden="true">▶</span>
+            <div>
+              <strong style="display:block;margin-bottom:2px;font-size:12px">Attach Your Files</strong>
+              <span style="font-size:12px;line-height:1.7">
+                Attach your audio files directly to the email, or include a
+                Google Drive, Dropbox, or WeTransfer link if files are large.
+              </span>
+            </div>
+          </div>
 
-             <!-- Name -->
-             <div class="form-group">
-               <label class="form-label" for="name">
-                 Your Name <span aria-hidden="true" style="color:#cc0000">*</span>
-               </label>
-               <input
-                 class="form-input"
-                 type="text"
-                 id="name"
-                 name="name"
-                 placeholder="e.g. Alex Rivera"
-                 required
-                 autocomplete="name">
-             </div>
+          <div class="contact-detail">
+            <span class="contact-detail-icon" aria-hidden="true">▶</span>
+            <div>
+              <strong style="display:block;margin-bottom:2px;font-size:12px">Project Details</strong>
+              <span style="font-size:12px;line-height:1.7">
+                Tell us about your project — genre, BPM, deadline, any reference
+                tracks you love, and anything else that helps us understand your vision.
+              </span>
+            </div>
+          </div>
 
-             <!-- Email -->
-             <div class="form-group">
-               <label class="form-label" for="email">
-                 Your Email <span aria-hidden="true" style="color:#cc0000">*</span>
-               </label>
-               <input
-                 class="form-input"
-                 type="email"
-                 id="email"
-                 name="email"
-                 placeholder="e.g. you@example.com"
-                 required
-                 autocomplete="email">
-             </div>
+          <div class="contact-detail" style="margin-bottom:20px">
+            <span class="contact-detail-icon" aria-hidden="true">★</span>
+            <div>
+              <strong style="display:block;margin-bottom:2px;font-size:12px">New Customer?</strong>
+              <span style="font-size:12px;line-height:1.7">
+                Mention it in your email for <strong>50% off your first track</strong> and
+                ask about our free mix evaluation offer.
+              </span>
+            </div>
+          </div>
 
-             <!-- Service Interest -->
-             <div class="form-group">
-               <label class="form-label" for="service">Service You're Interested In</label>
-               <select class="form-select" id="service" name="service">
-                 <option value="">— Select a service —</option>
-                 <option value="mixing">Mixing</option>
-                 <option value="mastering">Mastering</option>
-                 <option value="mixing-mastering">Mixing + Mastering</option>
-                 <option value="loudness">Loudness Normalization</option>
-                 <option value="stems">Stem Preparation / Separation</option>
-                 <option value="free-eval">Free Mix Evaluation</option>
-                 <option value="custom">Custom / Not Sure Yet</option>
-               </select>
-             </div>
+          <div class="pixel-divider" aria-hidden="true"></div>
 
-             <!-- Message -->
-             <div class="form-group">
-               <label class="form-label" for="message">
-                 Message <span aria-hidden="true" style="color:#cc0000">*</span>
-               </label>
-               <textarea
-                 class="form-textarea"
-                 id="message"
-                 name="message"
-                 placeholder="Tell us about your project — genre, BPM, deadline, any references you love, or anything else that helps us understand what you're going for."
-                 required></textarea>
-             </div>
+          <div style="margin-top:16px">
+            <a href="mailto:ModularToadAudio@protonmail.com" class="btn btn-primary">
+              ✉ Open Email Client
+            </a>
+            <span style="font-size:11px;color:var(--gray-dark);margin-left:12px">We respond within 24 hours.</span>
+          </div>
 
-             <div class="notice notice-info" style="margin-bottom:12px">
-               <span class="notice-icon" aria-hidden="true">▲</span>
-               <span style="font-size:11px">
-                 To attach audio files, please share a Google Drive, Dropbox or WeTransfer link in your message.
-               </span>
-             </div>
-
-             <!-- Submit -->
-             <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-               <button type="submit" class="btn btn-primary">
-                 Send Message
-               </button>
-               <span style="font-size:11px;color:var(--gray-dark)">
-                 Opens your email client — we respond within 24 hours.
-               </span>
-             </div>
-
-             <!-- Required field note -->
-             <p style="font-size:11px;color:var(--gray-dark);margin-top:10px">
-               <span style="color:#cc0000">*</span> Required fields
-             </p>
-
-           </form>
-          </div><!-- /.panel-inset -->
-
-        </div><!-- /.contact-layout -->
+        </div><!-- /.panel-inset -->
 
       </div><!-- /.window-body -->
 
