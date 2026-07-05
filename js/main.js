@@ -823,22 +823,25 @@ async function initPortfolioPreviewCarousel() {
 
 /* ── INIT ────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-  updateClock();
-  setInterval(updateClock, 1000);
-
-  initSharedBranding();
-  initPS2Background();
-  initHeroWaterShader();
-  initMascotPoke();
-  initNavigation();
-  initDesktopIcons();
-  initWindowButtons();
-  initStartMenu();
-  initButtonSounds();
-  initContactForm();
-  initServiceCardSounds();
-  initPageAnimation();
-  initRandomCtaBlurb();
-  initBootSequence();
-  initPortfolioPreviewCarousel();
+  const inits = [
+    () => { updateClock(); setInterval(updateClock, 1000); },
+    initSharedBranding,
+    initPS2Background,
+    initHeroWaterShader,
+    initMascotPoke,
+    initNavigation,
+    initDesktopIcons,
+    initWindowButtons,
+    initStartMenu,
+    initButtonSounds,
+    initContactForm,
+    initServiceCardSounds,
+    initPageAnimation,
+    initRandomCtaBlurb,
+    initBootSequence,
+    initPortfolioPreviewCarousel,
+  ];
+  inits.forEach(fn => {
+    try { fn(); } catch (err) { console.error(fn.name, err); }
+  });
 });
