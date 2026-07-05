@@ -6,12 +6,12 @@
    ============================================================ */
 
 const SITE_ASSETS = Object.freeze({
-  mascot: 'https://github.com/user-attachments/assets/a5536892-9152-4e2d-8e1a-695480eed48e',
-  services: 'https://github.com/user-attachments/assets/fc75a11e-e401-4075-9fa7-6c75d9ced063',
-  portfolio: 'https://github.com/user-attachments/assets/51335a06-fa62-44de-8334-6a6d1904754d',
-  pricing: 'https://github.com/user-attachments/assets/6c6dbbe4-3e73-47cd-89cd-5b21461e3ec4',
-  about: 'https://github.com/user-attachments/assets/9cecc67b-86c3-4e4c-b1fa-eb52eb978cdf',
-  contact: 'https://github.com/user-attachments/assets/8c6fc813-1bd5-47e6-87df-9e3003a44dbb',
+  mascot:    'images/mascot.gif',
+  services:  'images/services.png',
+  portfolio: 'images/portfolio.png',
+  pricing:   'images/pricing.png',
+  about:     'images/about.png',
+  contact:   'images/contact.png',
 });
 
 const PAGE_META = Object.freeze({
@@ -39,6 +39,7 @@ function createIconImage(url, className) {
   img.className = className;
   img.decoding = 'async';
   img.loading = 'lazy';
+  img.onerror = function () { this.style.display = 'none'; };
   return img;
 }
 
