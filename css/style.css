@@ -43,6 +43,7 @@
 
   --nav-h:  0px;
   --task-h: 0px;
+  --sidebar-w: 108px;
 
   --ps2-glow-bright: rgba(100, 220, 255, 0.85);
   --ps2-glow-mid:    rgba(70, 170, 255, 0.5);
@@ -121,9 +122,9 @@ img, svg { display: block; max-width: 100%; }
 .desktop {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  padding-top: var(--nav-h);
-  padding-bottom: var(--task-h);
+  align-items: flex-start;
+  gap: 18px;
+  padding: 14px;
   background-color: #060d24;
   position: relative;
 }
@@ -166,18 +167,22 @@ img, svg { display: block; max-width: 100%; }
 
 /* ── DESKTOP ICONS (Win98 fixed-left shortcuts) ──────────────── */
 .desktop-icons {
-  position: fixed;
-  left: 10px;
-  top: calc(var(--nav-h) + 8px);
-  bottom: calc(var(--task-h) + 8px);
+  position: sticky;
+  top: 14px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 8px 12px 8px 4px;
-  z-index: 100;
-  pointer-events: none;
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  max-height: calc(100vh - 28px);
+  padding: 10px 6px;
+  z-index: 550;
   overflow-y: auto;
   scrollbar-width: none;
+  border: 2px solid;
+  border-color: rgba(217, 225, 245, 0.85) rgba(10, 17, 38, 0.95) rgba(10, 17, 38, 0.95) rgba(217, 225, 245, 0.85);
+  background: linear-gradient(180deg, rgba(7, 13, 32, 0.92), rgba(17, 25, 53, 0.96));
+  box-shadow: 0 18px 34px rgba(4, 7, 15, 0.28), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 .desktop-icons::-webkit-scrollbar { display: none; }
 
@@ -188,13 +193,13 @@ img, svg { display: block; max-width: 100%; }
   gap: 8px;
   padding: 8px 6px;
   cursor: pointer;
-  width: 92px;
+  width: 100%;
   text-align: center;
   text-decoration: none;
   color: #fff;
   border: 1px solid transparent;
-  pointer-events: all;
   user-select: none;
+  border-radius: 8px;
 }
 .desktop-icon:hover {
   background: rgba(0, 0, 128, .52);
@@ -245,11 +250,6 @@ img, svg { display: block; max-width: 100%; }
   height: 100%;
   object-fit: cover;
   border-radius: 10px;
-}
-
-/* Only show desktop icons when there's room beside the 980px window */
-@media (max-width: 1100px) {
-  .desktop-icons { display: none; }
 }
 
 /* ── NAVIGATION ─────────────────────────────────────────────── */
@@ -428,7 +428,7 @@ img, svg { display: block; max-width: 100%; }
 .titlebar-btn:active { border-color: var(--bdr-dk) var(--bdr-lt) var(--bdr-lt) var(--bdr-dk); }
 .titlebar-btn.close:hover { background: #ff4040; color: var(--white); }
 
-.window-body { padding: 16px; color: var(--text-primary); }
+.window-body { padding: 18px; color: var(--text-primary); }
 
 /* ── PANELS ─────────────────────────────────────────────────── */
 .panel-inset {
@@ -597,7 +597,8 @@ img, svg { display: block; max-width: 100%; }
 /* ── MAIN LAYOUT ────────────────────────────────────────────── */
 .main-content {
   flex: 1;
-  padding: 14px;
+  min-width: 0;
+  padding: 0 14px 14px 0;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -607,8 +608,8 @@ img, svg { display: block; max-width: 100%; }
 
 .main-window {
   width: 100%;
-  max-width: 980px;
-  margin: 0 auto;
+  max-width: 1080px;
+  margin: 0;
   animation: windowOpen .18s ease-out;
 }
 
@@ -617,7 +618,7 @@ img, svg { display: block; max-width: 100%; }
 
 .section-title {
   font-family: var(--font-pixel);
-  font-size: clamp(12px, 1.4vw, 18px);
+  font-size: clamp(16px, 2vw, 23px);
   color: #6ef3ff;
   margin-bottom: 14px;
   padding-bottom: 8px;
@@ -656,7 +657,7 @@ img, svg { display: block; max-width: 100%; }
   padding: 16px;
 }
 .welcome-body p {
-  font-size: 13px;
+  font-size: 18px;
   line-height: 1.8;
   color: var(--text-primary);
   margin-bottom: 10px;
@@ -682,7 +683,7 @@ img, svg { display: block; max-width: 100%; }
   background: rgba(45, 88, 190, 0.22);
 }
 .welcome-highlight-label {
-  font-size: 11px;
+  font-size: 15px;
   font-weight: bold;
   color: #6ef3ff;
   display: block;
@@ -690,7 +691,7 @@ img, svg { display: block; max-width: 100%; }
   text-align: center;
 }
 .welcome-highlight-desc {
-  font-size: 10px;
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 1.4;
 }
@@ -887,7 +888,7 @@ img, svg { display: block; max-width: 100%; }
   display: none;
 }
 .service-card-title {
-  font-size: 14px;
+  font-size: 19px;
   font-weight: bold;
   margin-bottom: 6px;
   color: #6ef3ff;
@@ -896,7 +897,7 @@ img, svg { display: block; max-width: 100%; }
   letter-spacing: .06em;
 }
 .service-card p {
-  font-size: 13px;
+  font-size: 18px;
   color: var(--text-muted);
   line-height: 1.65;
   text-align: center;
@@ -915,7 +916,7 @@ img, svg { display: block; max-width: 100%; }
 }
 .service-row-icon { display: none; }
 .service-row-body h3 {
-  font-size: 15px;
+  font-size: 19px;
   font-weight: bold;
   margin-bottom: 6px;
   color: #6ef3ff;
@@ -924,7 +925,7 @@ img, svg { display: block; max-width: 100%; }
   letter-spacing: .06em;
 }
 .service-row-body p {
-  font-size: 13px;
+  font-size: 18px;
   color: var(--text-muted);
   line-height: 1.7;
   text-align: center;
@@ -935,7 +936,7 @@ img, svg { display: block; max-width: 100%; }
   display: inline-block;
   background: var(--toad-darkest);
   color: var(--toad-light);
-  font-size: 10px;
+  font-size: 12px;
   padding: 2px 8px;
   border: 1px solid var(--toad-dark);
   margin: 2px 2px 0 0;
@@ -990,7 +991,7 @@ img, svg { display: block; max-width: 100%; }
 }
 .pricing-card-header h3 {
   font-family: var(--font-pixel);
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.4;
 }
 .pricing-badge {
@@ -998,7 +999,7 @@ img, svg { display: block; max-width: 100%; }
   margin-top: 4px;
   background: #ff4040;
   color: var(--white);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: bold;
   padding: 2px 10px;
   border: 1px solid #cc0000;
@@ -1018,7 +1019,7 @@ img, svg { display: block; max-width: 100%; }
   margin-bottom: 4px;
 }
 .price-period {
-  font-size: 12px;
+  font-size: 17px;
   color: var(--text-muted);
   display: block;
   margin-bottom: 14px;
@@ -1026,7 +1027,7 @@ img, svg { display: block; max-width: 100%; }
 .price-strike {
   text-decoration: line-through;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 17px;
   margin-bottom: 2px;
 }
 
@@ -1036,7 +1037,7 @@ img, svg { display: block; max-width: 100%; }
   margin-bottom: 16px;
 }
 .pricing-features li {
-  font-size: 13px;
+  font-size: 18px;
   padding: 5px 0;
   border-bottom: 1px dotted var(--gray-dark);
   display: flex;
@@ -1079,14 +1080,14 @@ details summary {
   line-height: 1;
 }
 .testimonial-text {
-  font-size: 13px;
+  font-size: 18px;
   line-height: 1.75;
   margin-bottom: 8px;
   padding-top: 18px;
   color: var(--text-primary);
 }
 cite {
-  font-size: 12px;
+  font-size: 16px;
   font-style: italic;
   color: var(--toad-light);
 }
@@ -1107,7 +1108,7 @@ cite {
 }
 .contact-info-panel h3 {
   font-family: var(--font-pixel);
-  font-size: 12px;
+  font-size: 16px;
   color: var(--toad-light);
   margin-bottom: 16px;
   line-height: 1.4;
@@ -1117,7 +1118,7 @@ cite {
   align-items: flex-start;
   gap: 8px;
   margin-bottom: 14px;
-  font-size: 12px;
+  font-size: 17px;
   line-height: 1.65;
 }
 .contact-detail-icon { font-size: 18px; flex-shrink: 0; }
@@ -1137,7 +1138,7 @@ cite {
   margin-bottom: 10px;
   line-height: 1.4;
 }
-.cta-band p { font-size: 14px; margin-bottom: 18px; color: var(--toad-pale); }
+.cta-band p { font-size: 18px; margin-bottom: 18px; color: var(--toad-pale); }
 
 /* ── ABOUT PAGE ──────────────────────────────────────────────── */
 .about-grid {
@@ -1153,13 +1154,13 @@ cite {
 
 .about-text h2 {
   font-family: var(--font-pixel);
-  font-size: clamp(12px, 1.4vw, 18px);
+  font-size: clamp(17px, 2vw, 24px);
   color: var(--toad-light);
   margin-bottom: 12px;
   line-height: 1.4;
 }
 .about-text p {
-  font-size: 14px;
+  font-size: 18px;
   line-height: 1.8;
   margin-bottom: 12px;
   color: var(--text-primary);
@@ -1179,8 +1180,8 @@ cite {
   text-align: center;
 }
 .value-card-icon { font-size: 28px; margin-bottom: 8px; }
-.value-card h4 { font-size: 12px; font-weight: bold; color: var(--toad-light); margin-bottom: 4px; }
-.value-card p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.value-card h4 { font-size: 16px; font-weight: bold; color: var(--toad-light); margin-bottom: 4px; }
+.value-card p { font-size: 16px; color: var(--text-muted); line-height: 1.6; }
 
 /* ── NOTICE BOXES ───────────────────────────────────────────── */
 .notice {
@@ -1405,6 +1406,34 @@ cite {
 
 /* ── RESPONSIVE ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
+  .desktop {
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .desktop-icons {
+    top: 10px;
+    width: 88px;
+    min-width: 88px;
+    padding: 8px 4px;
+  }
+
+  .desktop-icon {
+    gap: 6px;
+    padding: 8px 4px;
+  }
+
+  .desktop-icon-emoji {
+    min-width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+
+  .desktop-icon-label {
+    font-size: 10px;
+    max-width: 70px;
+  }
+
   .navbar-menu {
     display: none;
     position: fixed;
@@ -1428,16 +1457,38 @@ cite {
   .about-grid        { grid-template-columns: 1fr; text-align: center; }
   .about-mascot      { display: flex; flex-direction: column; align-items: center; }
   .taskbar-items     { display: none; }
-  .main-content      { padding: 8px; }
+  .main-content      { padding: 0 0 10px; }
   .hero              { padding: 24px 12px; }
   .portfolio-preview-carousel { padding: 14px; }
   .portfolio-preview-track {
-    grid-auto-columns: minmax(78vw, 1fr);
+    grid-auto-columns: minmax(100%, 1fr);
     min-height: 320px;
   }
 }
 
 @media (max-width: 480px) {
+  .desktop {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .desktop-icons {
+    width: 74px;
+    min-width: 74px;
+    padding: 7px 3px;
+  }
+
+  .desktop-icon-emoji {
+    min-width: 42px;
+    height: 42px;
+    border-radius: 10px;
+  }
+
+  .desktop-icon-label {
+    font-size: 9px;
+    max-width: 60px;
+  }
+
   .services-grid     { grid-template-columns: 1fr; }
   .pricing-grid      { grid-template-columns: 1fr; }
   .testimonial-grid  { grid-template-columns: 1fr; }
@@ -1446,7 +1497,7 @@ cite {
   .service-row       { flex-direction: column; }
   .welcome-highlights { grid-template-columns: 1fr 1fr; }
   .hero-title        { font-size: clamp(18px, 9vw, 40px); letter-spacing: .03em; }
-  .portfolio-preview-track { grid-auto-columns: minmax(88vw, 1fr); }
+  .portfolio-preview-track { grid-auto-columns: minmax(100%, 1fr); }
   .portfolio-preview-actions { flex-direction: column; }
 }
 
@@ -1521,9 +1572,11 @@ cite {
   scrollbar-width: none;
   scroll-behavior: smooth;
   touch-action: pan-y pinch-zoom;
+  overscroll-behavior-x: contain;
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-overflow-scrolling: touch;
 }
 .portfolio-preview-track.dragging {
   scroll-snap-type: none;
@@ -1543,6 +1596,7 @@ cite {
   opacity: .62;
   transform: translateY(10px) scale(.95);
   transition: transform .24s ease, opacity .24s ease, box-shadow .24s ease, border-color .24s ease;
+  cursor: pointer;
 }
 .portfolio-preview-slide.is-active {
   opacity: 1;
@@ -1579,7 +1633,7 @@ cite {
   background: rgba(6, 13, 36, 0.8);
   border: 1px solid rgba(110, 214, 255, 0.45);
   color: var(--toad-pale);
-  font-size: 11px;
+  font-size: 13px;
 }
 .portfolio-preview-count {
   font-size: 28px;
@@ -1591,13 +1645,13 @@ cite {
 }
 .portfolio-preview-title {
   font-family: var(--font-heavy);
-  font-size: 18px;
+  font-size: 22px;
   color: var(--text-bright);
   letter-spacing: .04em;
   margin-bottom: 8px;
 }
 .portfolio-preview-summary {
-  font-size: 13px;
+  font-size: 18px;
   line-height: 1.7;
   color: var(--text-muted);
   margin-bottom: 14px;
@@ -1619,8 +1673,26 @@ cite {
 .portfolio-preview-status {
   text-align: center;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 15px;
   letter-spacing: .05em;
+}
+
+.window-body > .section > p[style*="font-size:13px"],
+.window-body p[style*="font-size:12px"],
+.window-body p[style*="font-size:13px"],
+.window-body p[style*="font-size:14px"],
+.window-body span[style*="font-size:11px"],
+.window-body div[style*="font-size:11px"],
+.window-body div[style*="font-size:12px"],
+.window-body strong[style*="font-size:12px"],
+.window-body summary[style*="font-size:12px"] {
+  font-size: 17px !important;
+}
+
+.window-body strong[style*="font-size:8px"],
+.window-body strong[style*="font-size:9px"],
+.window-body a[style*="font-size:10px"] {
+  font-size: 14px !important;
 }
 .portfolio-preview-empty {
   display: flex;
@@ -1670,31 +1742,6 @@ cite {
     font-size: clamp(40px, 4.8vw, 74px);
   }
 
-  .welcome-body p,
-  .about-text p,
-  .service-row-body p,
-  .service-card p,
-  .testimonial-text,
-  .cta-band p,
-  .pricing-features li,
-  .portfolio-preview-summary,
-  .window-body > .section > p[style*="font-size:13px"],
-  .window-body p[style*="font-size:12px"],
-  .window-body p[style*="font-size:14px"],
-  .window-body span[style*="font-size:11px"],
-  .window-body div[style*="font-size:11px"],
-  .window-body div[style*="font-size:12px"],
-  .window-body strong[style*="font-size:12px"],
-  .window-body summary[style*="font-size:12px"] {
-    font-size: 15px !important;
-  }
-
-  .window-body strong[style*="font-size:8px"],
-  .window-body strong[style*="font-size:9px"],
-  .window-body a[style*="font-size:10px"] {
-    font-size: 12px !important;
-  }
-
   .window-body span[style*="font-size:32px"] {
     font-size: 40px !important;
   }
@@ -1715,12 +1762,12 @@ cite {
 @media (max-width: 768px) {
   .portfolio-preview-carousel { padding: 14px; }
   .portfolio-preview-track {
-    grid-auto-columns: minmax(78vw, 1fr);
+    grid-auto-columns: minmax(100%, 1fr);
     min-height: 320px;
   }
 }
 
 @media (max-width: 480px) {
-  .portfolio-preview-track { grid-auto-columns: minmax(88vw, 1fr); }
+  .portfolio-preview-track { grid-auto-columns: minmax(100%, 1fr); }
   .portfolio-preview-actions { flex-direction: column; }
 }
