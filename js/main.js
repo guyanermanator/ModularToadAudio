@@ -405,6 +405,7 @@ function triggerBullToadExplosion() {
 
   // ── CAPTURE ALL VISIBLE ELEMENTS ─────────────────────────────
   const allEls = Array.from(document.querySelectorAll('*')).filter(el => {
+    if (el === document.documentElement || el === document.body || el === document.head) return false;
     if (el === overlay || overlay.contains(el)) return false;
     const r = el.getBoundingClientRect();
     if (r.width < 4 || r.height < 4) return false;
