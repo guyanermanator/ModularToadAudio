@@ -41,8 +41,8 @@
   --font-body:  'Exo 2', 'Segoe UI', Tahoma, Arial, sans-serif;
   --font-heavy: 'Oxanium', 'Arial Black', sans-serif;
 
-  --nav-h:  44px;
-  --task-h: 40px;
+  --nav-h:  0px;
+  --task-h: 0px;
 
   --ps2-glow-bright: rgba(100, 220, 255, 0.85);
   --ps2-glow-mid:    rgba(70, 170, 255, 0.5);
@@ -1453,6 +1453,14 @@ cite {
   scroll-behavior: smooth;
   touch-action: pan-y;
   cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.portfolio-preview-track.dragging {
+  scroll-snap-type: none;
+}
+.portfolio-preview-track.dragging * {
+  pointer-events: none;
 }
 .portfolio-preview-track::-webkit-scrollbar { display: none; }
 .portfolio-preview-track.dragging,

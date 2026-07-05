@@ -6,7 +6,7 @@
    ============================================================ */
 
 const SITE_ASSETS = Object.freeze({
-  mascot: 'https://github.com/user-attachments/assets/f5f6a705-f9b0-45e3-a699-155d5fb7a356',
+  mascot: 'https://github.com/user-attachments/assets/a5536892-9152-4e2d-8e1a-695480eed48e',
   services: 'https://github.com/user-attachments/assets/fc75a11e-e401-4075-9fa7-6c75d9ced063',
   portfolio: 'https://github.com/user-attachments/assets/51335a06-fa62-44de-8334-6a6d1904754d',
   pricing: 'https://github.com/user-attachments/assets/6c6dbbe4-3e73-47cd-89cd-5b21461e3ec4',
@@ -855,6 +855,7 @@ async function initPortfolioPreviewCarousel() {
 
     track.addEventListener('pointerdown', (event) => {
       if (event.button !== 0) return;
+      if (event.target.closest('a, button')) return;
       pointerDown = true;
       dragging = false;
       dragMoved = false;
@@ -887,7 +888,7 @@ async function initPortfolioPreviewCarousel() {
       if (dragging) {
         dragging = false;
         setActive(findClosestSlide());
-        window.setTimeout(() => { dragMoved = false; }, 80);
+        window.requestAnimationFrame(() => { dragMoved = false; });
         return;
       }
       dragMoved = false;
