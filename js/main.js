@@ -617,14 +617,57 @@ function initContactForm() {
     });
   }
 
-  form.addEventListener('submit', () => {
-    const btn = form.querySelector('button[type="submit"]');
-    const errorEl = form.querySelector('.form-error-msg');
-    if (errorEl) errorEl.remove();
+  const setFormMessage = (text, tone = 'error') => {
+    const existing = form.querySelector('.form-status-msg');
+    if (existing) existing.remove();
+
+    const msg = document.createElement('p');
+    msg.className = 'form-status-msg';
+    msg.setAttribute('aria-live', 'polite');
+    msg.style.fontSize = '11px';
+    msg.style.marginTop = '10px';
+    msg.style.color = tone === 'success' ? '#0a8a22' : '#cc0000';
+    msg.textContent = text;
+    form.appendChild(msg);
+  };
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
     if (!form.reportValidity()) return;
-    if (!btn) return;
-    btn.textContent = 'Opening secure form…';
-    btn.disabled = true;
+
+    const btn = form.querySelector('button[type="submit"]');
+    const defaultLabel = btn ? btn.textContent : '';
+    if (btn) {
+      btn.textContent = 'Sending message…';
+      btn.disabled = true;
+    }
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        const details = Array.isArray(data.errors)
+          ? data.errors.map(err => err.message).filter(Boolean).join(' ')
+          : '';
+        throw new Error(details || 'Unable to submit form right now.');
+      }
+
+      form.reset();
+      if (fileName) fileName.textContent = 'No file chosen';
+      setFormMessage('Thanks! Your message was sent successfully.', 'success');
+      if (btn) btn.textContent = 'Sent!';
+    } catch (error) {
+      setFormMessage(error.message || 'Submission failed. Please try again.', 'error');
+      if (btn) btn.textContent = defaultLabel || 'Send Message';
+    } finally {
+      if (btn) btn.disabled = false;
+    }
   });
 }
 
