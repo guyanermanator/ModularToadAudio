@@ -123,14 +123,16 @@
           <div class="panel-inset">
             <form
               id="contactForm"
-              action="https://formspree.io/f/mwvdaddg"
+              action="https://api.web3forms.com/submit"
               method="POST"
               enctype="multipart/form-data">
 
+              <!-- Replace with your Web3Forms access key -->
+              <input type="hidden" name="access_key" value="WEB3FORMS_ACCESS_KEY_HERE">
               <!-- Hidden field so you know it came from the website -->
-              <input type="hidden" name="_subject" value="New Enquiry — ModularToadAudio">
-              <!-- Formspree honeypot (spam protection) -->
-              <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+              <input type="hidden" name="subject" value="New Enquiry — ModularToadAudio">
+              <!-- Web3Forms honeypot (spam protection) -->
+              <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
               <!-- Name -->
               <div class="form-group">
